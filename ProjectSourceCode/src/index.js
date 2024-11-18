@@ -75,108 +75,96 @@ app.use(
 // *****************************************************
 
 // TODO - Include your API routes here
-app.get('/', (req, res) => {
-    res.redirect('/login');
+app.get('/', async (req, res) => 
+{
+  res.redirect('/login');
 });
 
-app.get('/login', (req, res) => {
-    res.render('pages/login');
+//Register ----------------------------------------------------------------------------------------------
+app.get('/register', async (req, res) => 
+{
+  res.render('pages/register');
 });
+  
+app.post('/register', async (req, res) =>
+{
+  const { username, password, degree, major, minor } = req.body; //getting request info
+  try
+  {
+  //hash the password using bcrypt library
+  const hash = await bcrypt.hash(req.body.password, 10);
 
-app.get('/register', (req, res)=> {
-  res.render('pages/register' )
-});
-
-// Register
-app.post('/register', async (req, res) => {
-  const { username, password } = req.body;
-
-  if (!username || !password || password.length < 8) {
-    return res.status(400).json({ message: 'Invalid input' });
+  // To-DO: Insert username and hashed password into the 'users' table
+  await db.query('INSERT INTO users(username, password, degree, major, minor) VALUES ($1, $2, $3, $4, $5);', [username, hash, degree, major, minor]);
+  console.log("User was inserted into the database");
+  return res.redirect('/login'); //it worked, redirect to login route
   }
-  try {
-    // Hash the password using bcrypt
-    const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert the username and hashed password into the 'users' table
-    await db.none(
-      'INSERT INTO users(username, password) VALUES ($1, $2);',
-      [username, hashedPassword]
-    );
-
-    //success
-    res.redirect('/login');
-  } catch (err) {
-    console.error('Error inserting user:', err);
-    //fails
-    res.redirect('/register');
+  catch(error)
+  {
+    return res.redirect('/register'); //didnt work, go back to the register page
   }
 });
 
-app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
 
-  try {
-    const user = await db.oneOrNone('SELECT * FROM users WHERE username = $1;', [username]);
+//Login ----------------------------------------------------------------------------------------------
+app.get('/login', (req, res) => 
+{
+  res.render('pages/login');
+});
 
-    // If user is not found
-    if (!user) {
-      return res.status(401).render('pages/login', {
-        message: 'Incorrect username or password.',
-      });
-    }
+app.post('/login', async (req, res) =>
+{
+  const {username, password } = req.body; //getting the request info
+  const userRes = await db.query('SELECT * FROM users WHERE username = $1', [username]); //find them by username
 
-    // If password does not match
-    const match = await bcrypt.compare(password, user.password);
+  if(userRes.length == 0) //user isnt found
+  {
+    console.log("User was not found.")
+    return res.redirect('/register'); //back to register pg
+  }
 
-    if (!match) {
-      return res.status(401).render('pages/login', {
-        message: 'Incorrect username or password.',
-      });
-    }
-
+  const user = userRes[0]; //user object found
+  // check if password from request matches with password in DB
+  const match = await bcrypt.compare(req.body.password, user.password);
+  if(!match) //couldnt find a full match 
+  {
+    console.log("Found the username, but not a password");
+    return res.render('pages/login',
+    {message: 'Incorrect username or password.'});
+  }
+  else //found a match, save user details in session like in lab 7
+  {
+    // Authentication Middleware
+    const auth = (req, res, next) => 
+      {
+        if (!req.session.user) 
+        {
+          // Default to login page.
+          return res.redirect('/login');
+        }
+        next();
+      };
+  
+  // Authentication Required
+  app.use(auth);
+    console.log("User found, time to register");
     req.session.user = user;
     req.session.save();
-    res.redirect('/discover');
-  } catch (err) {
-    console.error('Error during login:', err);
-    res.status(500).render('pages/login', {
-      message: 'An error occurred. Please try again.',
-    });
+    return res.redirect('/register');
   }
 });
 
-
-
-// Authentication Middleware.
-const auth = (req, res, next) => {
-  if (!req.session.user) {
-    // Default to login page.
-    return res.redirect('/login');
-  }
-  next();
-};
-
-app.get('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.error('Error destroying session:', err);
-    }
-
-    res.render('pages/logout', { message: 'Logged out successfully!' });
-  });
+//Log out ----------------------------------------------------------------------------------------------
+app.get('/logout', (req, res) => 
+{
+  req.session.destroy();
+  res.render('pages/logout');
 });
 
-app.get('/welcome', (req, res) => {
-  res.json({status: 'success', message: 'Welcome!'});
-});
-
-// Authentication Required
-app.use(auth);
 // *****************************************************
 // <!-- Section 5 : Start Server-->
 // *****************************************************
 // starting the server and keeping the connection open to listen for more requests
-//app.listen(3000);
 module.exports = app.listen(3000);
 console.log('Server is listening on port 3000');
