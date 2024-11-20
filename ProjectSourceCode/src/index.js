@@ -92,7 +92,7 @@ app.use(
 // TODO - Include your API routes here
 app.get('/', async (req, res) => 
 {
-  res.redirect('/login');
+  res.render('pages/home');
 });
 
 //Register ----------------------------------------------------------------------------------------------
@@ -101,16 +101,27 @@ app.get('/register', async (req, res) =>
   res.render('pages/register');
 });
   
+app.get('/scheduleBuilder', (req, res) => {
+  res.render('pages/scheduleBuilder', {
+      years: [
+          { name: "Year 1" },
+          { name: "Year 2" },
+          { name: "Year 3" },
+          { name: "Year 4" }
+      ]
+  });
+});
+
 app.post('/register', async (req, res) =>
 {
-  const { username, password, degree, major, minor } = req.body; //getting request info
+  const { username, password, degree } = req.body; //getting request info
   try
   {
   //hash the password using bcrypt library
   const hash = await bcrypt.hash(req.body.password, 10);
 
   // To-DO: Insert username and hashed password into the 'users' table
-  await db.query('INSERT INTO users(username, password, degree, major, minor) VALUES ($1, $2, $3, $4, $5);', [username, hash, degree, major, minor]);
+  await db.query('INSERT INTO users(username, password, degree) VALUES ($1, $2, $3);', [username, hash, degree]);
   console.log("User was inserted into the database");
   return res.redirect('/login'); //it worked, redirect to login route
   }
@@ -167,8 +178,15 @@ app.post('/login', async (req, res) =>
     console.log("User found, time to register");
     req.session.user = user;
     req.session.save();
-    return res.redirect('/register');
+    return res.redirect('/test');
   }
+});
+
+// "test" IS A TEMPORARY VARIABLE HANNAH, CHANGE THE NAME TO SMT SMARTER LATER !!!!
+
+app.get('/test', (req, res) => 
+{
+  res.render('pages/test');
 });
 
 //Log out ----------------------------------------------------------------------------------------------
