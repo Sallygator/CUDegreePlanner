@@ -8,3 +8,40 @@ Points to include in the minutes would be:
 - Alternative actions/options discussed
 - Follow-up items, including agreed-on roles and responsibilities
 ---------------------------------------------------------------------------------------
+
+Nick: 
+- designing and implimenting UI page 
+- trying to get a merge together between Nick, Daralynn and Hannah for front end testing
+
+Hannah:
+- working on index.js file for register, login and pages
+- trying to get a merge together between Nick, Daralynn and Hannah for front end testing
+- starting on a navbar (contains login/logout, home page option, design your degree)
+
+Truman:
+- completed webscrapper, working great
+- organized CSV file
+- designing the algorithm for finding pre-reques of a class for a user 
+
+Daralynn:
+- login html page
+- trying to get a merge together between Nick, Daralynn and Hannah for front end testing
+- create home page html (has all user info and a logout button)
+
+Marcus:
+- working on implimenting database datamodel
+- working on coding database creation scripts
+
+Announcements:
+- Anytime you are doing work, make sure there is an issue on the project board related to it. Keep that up-to-date
+- Keep github up to date with any new information. Both code and documentation related. This will make the final github cleanup easier.
+- Beginning a larger merge to see the product come together 
+
+Waiting on
+- Merges to be completed 
+- Implimenting back end on the front end 
+
+Whats Next
+- Have a working front end ready for the backend 
+- Test and wrap up all back end content 
+- Impliment both sides 
