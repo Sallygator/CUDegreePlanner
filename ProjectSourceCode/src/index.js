@@ -26,10 +26,6 @@ class course {
   this.counts_for = counts_for
 }};
 
-const queryCourses =`
-  SELECT *
-    FROM courses`
-
 const all_courses = []
 
 // *****************************************************
