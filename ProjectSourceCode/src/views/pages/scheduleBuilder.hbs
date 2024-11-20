@@ -81,16 +81,43 @@
             overflow-y: auto;
         }
     </style>
+    
+    {{!-- Handlebars Scripting --}}
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <script>
+      // compile the template
+      var template = Handlebars.compile("Handlebars <b>{{doesWhat}}</b>");
+      // execute the compiled template and print the output to the console
+      console.log(template({ doesWhat: "rocks!" }));
+    </script>
+
+    {{!-- Custom Scripting --}}
+    {{!<script src="CUDegreePlanner\ProjectSourceCode\src\resources\js\script.js"></script>}}
+
+    {{!-- Jquery Scripting --}}
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script>
+    $( function() {
+        $( "#sortable1, #sortable2" ).sortable({
+        connectWith: ".connectedSortable"
+        }).disableSelection();
+    } );
+    </script>
 </head>
 <body>
     <!-- Sidebar -->
     <div class="container">
         <div class="sidebar">
-            <input type="text" placeholder="Search courses...">
-            <ul>
-                <li>Sample Course 1</li>
-                <li>Sample Course 2</li>
-            </ul>
+            <div class="col-md">
+        <input type="text" placeholder="Search..." id="course_search" onsubmit="searchForCourse()">
+        <ul id="course_search_results" class="connectedSortable">
+        {{#each all_courses}}
+        {{course_card}}
+        {{/each}}
+    </ul>
+</div>
         </div>
 
         <!-- Main Content -->
@@ -101,9 +128,11 @@
                 <div class="semester">
                     <h4>Fall</h4>
                 </div>
+                <ul id="{{this.name}}_Fall" class="connectedSortable"></ul>
                 <div class="semester">
                     <h4>Spring</h4>
                 </div>
+                <ul id="{{this.name}}_Spring" class="connectedSortable"></ul>
             </div>
             {{/each}}
         </div>

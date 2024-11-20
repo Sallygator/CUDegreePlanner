@@ -137,7 +137,6 @@ app.post('/register', async (req, res) =>
 app.get('/login', (req, res) => 
 {
   res.render('pages/login');
-  populateCourses();
 });
 
 app.post('/login', async (req, res) =>
@@ -178,6 +177,7 @@ app.post('/login', async (req, res) =>
     console.log("User found, time to register");
     req.session.user = user;
     req.session.save();
+    populateCourses();
     return res.redirect('/test');
   }
 });
@@ -197,9 +197,11 @@ app.get('/logout', (req, res) =>
 });
 
 //Search courses -----------------------------------------------
+// Grabs entire table in one query and slices it up, may be bad
 
 async function populateCourses(){
-  var parserFull = await db.any('SELECT * FROM courses;').split("\n");
+  var parserFullQuery = await db.query('SELECT * FROM courseregistry;');
+  var parserFull = parserFullQuery.split("\n");
   var parserTemp;
   var courseTemp;
   for (i = 0; i < length(parserFull); i++){
