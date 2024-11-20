@@ -13,6 +13,25 @@ const session = require('express-session'); // To set the session object. To sto
 const bcrypt = require('bcryptjs'); //  To hash passwords
 const axios = require('axios'); // To make HTTP requests from our server. We'll learn more about it in Part C.
 
+class course {
+  constructor(department, course_code, course_name, description, hours_elective, hours_core, hours_foundational, pre_reqs, counts_for) {
+  this.department = department
+  this.course_code = course_code
+  this.course_name = course_name
+  this.description = description
+  this.hours_elective = hours_elective
+  this.hours_core = hours_core
+  this.hours_foundational = hours_foundational
+  this.pre_reqs = pre_reqs
+  this.counts_for = counts_for
+}};
+
+const queryCourses =`
+  SELECT *
+    FROM courses`
+
+const all_courses = []
+
 // *****************************************************
 // <!-- Section 2 : Connect to DB -->
 // *****************************************************
@@ -111,6 +130,7 @@ app.post('/register', async (req, res) =>
 app.get('/login', (req, res) => 
 {
   res.render('pages/login');
+  populateCourses();
 });
 
 app.post('/login', async (req, res) =>
@@ -161,6 +181,21 @@ app.get('/logout', (req, res) =>
   req.session.destroy();
   res.render('pages/logout');
 });
+
+//Search courses -----------------------------------------------
+
+async function populateCourses(){
+  var parserFull = await db.any('SELECT * FROM courses;').split("\n");
+  var parserTemp;
+  var courseTemp;
+  for (i = 0; i < length(parserFull); i++){
+    parserTemp = parserFull[i];
+    parserTemp.split("|");
+    courseTemp = new course(parserTemp[0], parserTemp[1], parserTemp[2], parserTemp[3], parserTemp[4], parserTemp[5], parserTemp[6], parserTemp[7], parserTemp[8],);
+    all_courses.push(courseTemp);
+  }
+}
+
 
 // *****************************************************
 // <!-- Section 5 : Start Server-->
