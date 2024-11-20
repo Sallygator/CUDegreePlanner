@@ -86,6 +86,17 @@ app.get('/register', async (req, res) =>
   res.render('pages/register');
 });
   
+app.get('/scheduleBuilder', (req, res) => {
+  res.render('pages/scheduleBuilder', {
+      years: [
+          { name: "Year 1" },
+          { name: "Year 2" },
+          { name: "Year 3" },
+          { name: "Year 4" }
+      ]
+  });
+});
+
 app.post('/register', async (req, res) =>
 {
   const { username, password, degree } = req.body; //getting request info
