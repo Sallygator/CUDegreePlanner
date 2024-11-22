@@ -26,12 +26,8 @@ class course {
   this.counts_for = counts_for
 }};
 
-<<<<<<< HEAD
 const all_courses = []
-const queried_course = "" // Added by Truman, trying to model how Nick grabbed the whole db
-=======
-var all_courses = []
->>>>>>> fbe36adc0c5922c66cb657eed7e78d432357367f
+const queried_course = ""
 
 // *****************************************************
 // <!-- Section 2 : Connect to DB -->
@@ -214,7 +210,6 @@ async function populateCourses(){
   console.log('what the fuck');
 }
 
-<<<<<<< HEAD
 async function searchForCourse(input)
 {
   var queriedCourse = await db.query('SELECT * from courseregistry WHERE ClassCode = $input');
@@ -225,9 +220,6 @@ async function searchForCourse(input)
   queried_course = queriedCourse;
 }
 
-
-=======
->>>>>>> fbe36adc0c5922c66cb657eed7e78d432357367f
 // *****************************************************
 // <!-- Section 5 : Start Server-->
 // *****************************************************
