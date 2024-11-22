@@ -1,53 +1,42 @@
 -- -----------------------------------------------------
--- Table `courseregistry`
+-- Table courseregistry
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `courseregistry` ;
+DROP TABLE IF EXISTS courseregistry;
 
-CREATE TABLE IF NOT EXISTS `courseregistry` (
-  `ClassCode` INT NOT NULL AUTO_INCREMENT,
-  `Department` CHAR(4) NOT NULL,
-  `CreditHours` INT NOT NULL,
-  `Description` MEDIUMTEXT NOT NULL,
-  `Name` VARCHAR(200) NOT NULL,
-  `PreRecs` MEDIUMTEXT NULL,
-  `CountsFor` VARCHAR(45) NULL,
-  `Core` INT NOT NULL,
-  `Foundational` INT NOT NULL,
-  `ComputerScience` INT NOT NULL,
-  PRIMARY KEY (`ClassCode`, `Department`));
-
+CREATE TABLE IF NOT EXISTS courseregistry (
+  ClassCode CHAR(8),
+  CreditHours INT NOT NULL,
+  Description TEXT NOT NULL,
+  Name VARCHAR(200) NOT NULL,
+  PreRecs TEXT NULL,
+  CountsFor VARCHAR(45) NULL,
+  Core INT NOT NULL,
+  Foundational INT NOT NULL,
+  ComputerScience INT NOT NULL
+);
 
 -- -----------------------------------------------------
--- Table `degreerequirements`
+-- Table degreerequirements
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `degreerequirements` ;
+DROP TABLE IF EXISTS degreerequirements;
 
-CREATE TABLE IF NOT EXISTS `degreerequirements` (
-  `MajorCode` INT NOT NULL AUTO_INCREMENT,
-  `TotalCredits` INT NOT NULL,
-  `Rerquirements` MEDIUMTEXT NOT NULL,
-  PRIMARY KEY (`MajorCode`));
-
+CREATE TABLE IF NOT EXISTS degreerequirements (
+  MajorCode SERIAL PRIMARY KEY,
+  TotalCredits INT NOT NULL,
+  Requirements TEXT NOT NULL
+);
 
 -- -----------------------------------------------------
--- Table `user`
+-- Table user
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `user` ;
+DROP TABLE IF EXISTS users;
 
-CREATE TABLE IF NOT EXISTS `user` (
-  `UserId` INT NOT NULL AUTO_INCREMENT,
-  `Name` VARCHAR(200) NOT NULL,
-  `Email` VARCHAR(200) NOT NULL,
-  `Password` BINARY(64) NOT NULL,
-  `Degree` VARCHAR(45) NOT NULL,
-  `Major` VARCHAR(45) NOT NULL,
-  `MajorCode` INT NOT NULL,
-  PRIMARY KEY (`UserId`));
-
-=======
-CREATE TABLE IF NOT EXISTS users 
-(
-    username VARCHAR(50) PRIMARY KEY,
-    password CHAR(60) NOT NULL,
-    degree VARCHAR(50) NOT NULL,
+CREATE TABLE IF NOT EXISTS users (
+  userId SERIAL PRIMARY KEY,
+  username VARCHAR(200),
+  email VARCHAR(200),
+  password BYTEA,
+  degree VARCHAR(45),
+  major VARCHAR(45),
+  majorCode INT
 );

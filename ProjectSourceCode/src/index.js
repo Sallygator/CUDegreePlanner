@@ -26,8 +26,12 @@ class course {
   this.counts_for = counts_for
 }};
 
+<<<<<<< HEAD
 const all_courses = []
 const queried_course = "" // Added by Truman, trying to model how Nick grabbed the whole db
+=======
+var all_courses = []
+>>>>>>> fbe36adc0c5922c66cb657eed7e78d432357367f
 
 // *****************************************************
 // <!-- Section 2 : Connect to DB -->
@@ -93,23 +97,30 @@ app.use(
 // TODO - Include your API routes here
 app.get('/', async (req, res) => 
 {
-  res.render('pages/home');
+  res.render('pages/home', {user: req.session.user});
 });
 
 //Register ----------------------------------------------------------------------------------------------
 app.get('/register', async (req, res) => 
 {
-  res.render('pages/register');
+  res.render('pages/register', {user: req.session.user}); //User item in session
 });
   
-app.get('/scheduleBuilder', (req, res) => {
-  res.render('pages/scheduleBuilder', {
+app.get('/scheduleBuilder', (req, res) => 
+{
+  if(!req.session.user)
+  {
+    return res.redirect('/login');
+  }
+  res.render('pages/scheduleBuilder', 
+    {
       years: [
           { name: "Year 1" },
           { name: "Year 2" },
           { name: "Year 3" },
           { name: "Year 4" }
-      ]
+      ],
+      user: req.session.user
   });
 });
 
@@ -137,53 +148,50 @@ app.post('/register', async (req, res) =>
 //Login ----------------------------------------------------------------------------------------------
 app.get('/login', (req, res) => 
 {
-  res.render('pages/login');
+  res.render('pages/login', {user: req.session.user});
 });
 
-app.post('/login', async (req, res) =>
+
+app.post('/login', async (req, res) => 
 {
-  const {username, password } = req.body; //getting the request info
-  const userRes = await db.query('SELECT * FROM users WHERE username = $1', [username]); //find them by username
+  const { username, password } = req.body; // getting the request info
+  const userRes = await db.query('SELECT * FROM users WHERE username = $1', [username]); // find them by username
 
-  if(userRes.length == 0) //user isnt found
-  {
-    console.log("User was not found.")
-    return res.redirect('/register'); //back to register pg
+  if (userRes.length == 0) { // user isn't found
+    console.log("User was probably not inserted");
+    return res.redirect('/register'); // back to register pg
   }
 
-  const user = userRes[0]; //user object found
-  // check if password from request matches with password in DB
-  const match = await bcrypt.compare(req.body.password, user.password);
-  if(!match) //couldnt find a full match 
-  {
-    console.log("Found the username, but not a password");
-    return res.render('pages/login',
-    {message: 'Incorrect username or password.'});
-  }
-  else //found a match, save user details in session like in lab 7
-  {
-    // Authentication Middleware
-    const auth = (req, res, next) => 
-      {
-        if (!req.session.user) 
-        {
-          // Default to login page.
-          return res.redirect('/login');
-        }
-        next();
-      };
+  const user = userRes[0]; // user object found
+  const storedPassword = user.password.toString('utf-8'); // Convert BTEA to string
+
+  // Check if the password from request matches with password in DB
+  const match = await bcrypt.compare(password, storedPassword); // Compare with the string value
   
-  // Authentication Required
-  app.use(auth);
+  if (!match) { // couldn't find a full match 
+    console.log("Found the username, but not a password");
+    return res.render('pages/login', { message: 'Incorrect username or password.', user: req.session.user });
+  } else { // found a match, save user details in session like in lab 7
+    // Authentication Middleware
+    const auth = (req, res, next) => {
+      if (!req.session.user) {
+        // Default to login page.
+        return res.redirect('/login');
+      }
+      next();
+    };
+
+    // Authentication Required
+    app.use(auth);
     console.log("User found, time to register");
     req.session.user = user;
     req.session.save();
     populateCourses();
-    return res.redirect('/test');
+    return res.redirect('/scheduleBuilder');
   }
 });
 
-// "test" IS A TEMPORARY VARIABLE HANNAH, CHANGE THE NAME TO SMT SMARTER LATER !!!!
+// test IS A TEMPORARY VARIABLE HANNAH, CHANGE THE NAME TO SMT SMARTER LATER !!!!
 
 app.get('/test', (req, res) => 
 {
@@ -193,26 +201,20 @@ app.get('/test', (req, res) =>
 //Log out ----------------------------------------------------------------------------------------------
 app.get('/logout', (req, res) => 
 {
-  req.session.destroy();
-  res.render('pages/logout');
+  req.session.destroy(); //destory the session
+  res.redirect('/'); //back to home after logging out
 });
 
 //Search courses -----------------------------------------------
 // Grabs entire table in one query and slices it up, may be bad
 
 async function populateCourses(){
-  var parserFullQuery = await db.query('SELECT * FROM courseregistry;');
-  var parserFull = parserFullQuery.split("\n");
-  var parserTemp;
-  var courseTemp;
-  for (i = 0; i < length(parserFull); i++){
-    parserTemp = parserFull[i];
-    parserTemp.split("|");
-    courseTemp = new course(parserTemp[0], parserTemp[1], parserTemp[2], parserTemp[3], parserTemp[4], parserTemp[5], parserTemp[6], parserTemp[7], parserTemp[8],);
-    all_courses.push(courseTemp);
-  }
+  all_courses = await db.query('SELECT * FROM courseregistry');
+  console.log(all_courses[0].classcode);
+  console.log('what the fuck');
 }
 
+<<<<<<< HEAD
 async function searchForCourse(input)
 {
   var queriedCourse = await db.query('SELECT * from courseregistry WHERE ClassCode = $input');
@@ -224,6 +226,8 @@ async function searchForCourse(input)
 }
 
 
+=======
+>>>>>>> fbe36adc0c5922c66cb657eed7e78d432357367f
 // *****************************************************
 // <!-- Section 5 : Start Server-->
 // *****************************************************
