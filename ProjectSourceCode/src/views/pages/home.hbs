@@ -1,71 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <title>Home Page</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-        }
-        .user-info {
-            display: none;
-        }
-        #howTo {
-            margin-top: 30px;
-            text-align: left;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+    body 
+    {
+      background: linear-gradient(135deg, hwb(34 42% 33%), #648cc4); /* Gradient background */
+    }
+
+    h1 
+    {
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    /* Flexbox centering for the content */
+    .content-wrapper 
+    {
+    display: flex;
+    justify-content: center; /* horizontally */
+    align-items: left; /* all align to the left */
+    flex-direction: column; /* vertically stacks items */
+    height: 70%;
+    color: #b3b3b3;
+    background-color: rgba(0, 0, 0, 0.731); 
+    padding: 5%;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
+    width: 80%;
+    margin-top: 3%; /* push box down below navbar */
+    margin-left: 10%; /* push box left */
+    max-width: fit-content;
+    }
     </style>
 </head>
-<body>
-    <div id="description">
-        <p>
-            Welcome to our academic planning tool! This website helps students plan their class schedules for the next four years, ensuring they meet all degree requirements. 
-            Log in to save your progress and customize your plan.
-        </p>
+<body class="h-100 d-flex flex-column">
+    <div class="content-wrapper">
+        {{#if user}} <!-- user is logged in -->
+        <div id="loggedIn" class="user-info">
+            <h1>Welcome, {{user.username}}!</h1> <!-- users username -->
+            <p>Your degree: {{user.degree}} </p>  <!-- user's degree -->
+        </div>
+        {{else}} <!-- no one is logged in -->
+        <div id="loggedOut">
+            <h1>Welcome to the CU Degree Planner Website!</h1>
+            <p>Please <a href="/login">log in</a> to view your details.</p>
+        </div>
+        {{/if}} <!-- bottom two items will be constants -->
+        <div id="description">
+            <p>
+                Welcome to our academic planning tool! This website helps students plan their class schedules for the next four years, ensuring they meet all degree requirements. 
+                Log in to save your progress and customize your plan.
+            </p>
+        </div>
+        <div id="howTo">
+            <h4>How to Use This Application</h4>
+            <ul>
+                <li>Register yourself through the registration page if you haven't already.</li>
+                <li>Log in using your credentials.</li>
+                <li>Navigate to the 'Schedule Builder' page to begin selecting classes.</li>
+                <li>...Specific schedule building steps put in here...</li>
+            </ul>
+        </div>
     </div>
-
-    <div id="loggedOut">
-        <h1>Welcome to the CU Degree Planner Website!</h1>
-        <p>Please <a href="/login">log in</a> to view your details.</p>
-    </div>
-    <div id="loggedIn" class="user-info">
-        <h1>Welcome, <span id="userName"></span>!</h1>
-        <p>Your degree: <span id="userDegree"></span></p>
-    </div>
-
-    <div id="howTo">
-        <h2>How to Use This Application</h2>
-        <ul>
-            <li>Register yourself first through the registration page if you haven't already.</li>
-            <li>Log in using your credentials.</li>
-            <li>Navigate to the 'Schedule Builder' page to begin selecting classes.</li>
-            <li>...Specific schedule building steps put in here...</li>
-        </ul>
-    </div>
-
-    <script>
-        // replace this with backend user session variable
-        const userLoggedIn = true; 
-        const userName = "John Doe";
-        const userDegree = "Computer Science";
-
-        if (userLoggedIn) {
-            // Show logged-in content
-            document.getElementById('loggedIn').style.display = 'block';
-            document.getElementById('userName').textContent = userName;
-            document.getElementById('userDegree').textContent = userDegree;
-            document.getElementById('loggedOut').style.display = 'none';
-        } else {
-            // Show logged-out content
-            document.getElementById('loggedOut').style.display = 'block';
-            document.getElementById('loggedIn').style.display = 'none';
-        }
-    </script>
 </body>
 </html>
