@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -102,43 +103,63 @@
             padding: 10px;
         }
     </style>
-    
+
     {{!-- Handlebars Scripting --}}
+
+    <script id="course-list" type="text/x-handlebars-template">
+        <ul id="course_search_results" class="connectedSortable">
+            {{#each this}}
+                <li>
+                    <div class="row">
+                        <div id="{{course_code}}" class="card" draggable="true" ondragstart="drag(event)">
+                            <div class="card-body">
+                                <h3 class="card-title">{{course_name}}</h3>
+                                <p class="card-text">{{course_code}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {{/each}}
+        </ul>
+</script>
+
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
     <script>
-      // compile the template
-      var template = Handlebars.compile("Handlebars <b>{{doesWhat}}</b>");
-      // execute the compiled template and print the output to the console
-      console.log(template({ doesWhat: "rocks!" }));
+        // compile the template
+        var template = Handlebars.compile("Handlebars <b>{{doesWhat}}</b>");
+        // execute the compiled template and print the output to the console
+        console.log(template({ doesWhat: "rocks!" }));
+        var course-list-template = Handlebars.compile($('#course-list').html())(all_courses);
+        $('.course-list-initial').html(course-list-template); //add the template to a div to embed
     </script>
 
     {{!-- Custom Scripting --}}
-    {{!<script src="CUDegreePlanner\ProjectSourceCode\src\resources\js\script.js"></script>}}
+    {{!
+    <script src="CUDegreePlanner\ProjectSourceCode\src\resources\js\script.js"></script>}}
+
+
 
     {{!-- Jquery Scripting --}}
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
     <script>
-    $( function() {
-        $( "#sortable1, #sortable2" ).sortable({
-        connectWith: ".connectedSortable"
-        }).disableSelection();
-    } );
+        $(function () {
+            $("#sortable1, #sortable2").sortable({
+                connectWith: ".connectedSortable"
+            }).disableSelection();
+        });
     </script>
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="container">
         <div class="sidebar">
             <div class="col-md">
-        <input type="text" placeholder="Search..." id="course_search" onsubmit="searchForCourse()">
-        <ul id="course_search_results" class="connectedSortable">
-        {{#each all_courses}}
-        {{course_card}}
-        {{/each}}
-    </ul>
-</div>
+                <input type="text" placeholder="Search..." id="course_search" onsubmit="searchForCourse()">
+                <div class="course-list-initial"></div>
+            </div>
         </div>
 
         <!-- Main Content -->
@@ -164,4 +185,5 @@
         Semester boxes are currently empty.
     </div>
 </body>
+
 </html>

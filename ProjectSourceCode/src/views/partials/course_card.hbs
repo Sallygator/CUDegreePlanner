@@ -1,12 +1,18 @@
-<li>
+<script id="course-list" type="text/x-handlebars-template">
+        <ul id="course_search_results" class="connectedSortable">
+            {{#each this}}
+            <li>
     <div class="row">
         <div>
-            <div id="{{course_code}}" class="card" draggable="true" ondragstart="drag(event)">
+            <div id="{{this.course_code}}" class="card" draggable="true" ondragstart="drag(event)">
                 <div class="card-body">
-                    <h3 class="card-title">{{course_name}}</h3>
-                    <p class="card-text">{{course_code}}</p>
+                    <h3 class="card-title">{{this.course_name}}</h3>
+                    <p class="card-text">{{this.course_code}}</p>
                 </div>
             </div>
         </div>
     </div>
 </li>
+            {{/each}}
+        </ul>
+</script>
