@@ -27,6 +27,7 @@ class course {
 }};
 
 const all_courses = []
+const queried_course = "" // Added by Truman, trying to model how Nick grabbed the whole db
 
 // *****************************************************
 // <!-- Section 2 : Connect to DB -->
@@ -210,6 +211,16 @@ async function populateCourses(){
     courseTemp = new course(parserTemp[0], parserTemp[1], parserTemp[2], parserTemp[3], parserTemp[4], parserTemp[5], parserTemp[6], parserTemp[7], parserTemp[8],);
     all_courses.push(courseTemp);
   }
+}
+
+async function searchForCourse(input)
+{
+  var queriedCourse = await db.query('SELECT * from courseregistry WHERE ClassCode = $input');
+
+  // If query not found, return null or something to tell the sight it wasn't found
+  if(queriedCourse == NULL) { queriedCourse = ""; return; } // Log something here
+  
+  queried_course = queriedCourse;
 }
 
 
