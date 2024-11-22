@@ -13,21 +13,6 @@ const session = require('express-session'); // To set the session object. To sto
 const bcrypt = require('bcryptjs'); //  To hash passwords
 const axios = require('axios'); // To make HTTP requests from our server. We'll learn more about it in Part C.
 
-class course {
-  constructor(department, course_code, course_name, description, hours_elective, hours_core, hours_foundational, pre_reqs, counts_for) {
-  this.department = department
-  this.course_code = course_code
-  this.course_name = course_name
-  this.description = description
-  this.hours_elective = hours_elective
-  this.hours_core = hours_core
-  this.hours_foundational = hours_foundational
-  this.pre_reqs = pre_reqs
-  this.counts_for = counts_for
-}};
-
-const all_courses = []
-const queried_course = ""
 
 // *****************************************************
 // <!-- Section 2 : Connect to DB -->
@@ -42,7 +27,7 @@ const hbs = handlebars.create({
 
 // database configuration
 const dbConfig = {
-  host: 'db', // the database server
+  host: 'dpg-ct0cvi9opnds73abg2mg-a', // the database server
   port: 5432, // the database port
   database: process.env.POSTGRES_DB, // the database name
   user: process.env.POSTGRES_USER, // the user account to connect with
@@ -192,6 +177,7 @@ app.post('/login', async (req, res) =>
 app.get('/test', (req, res) => 
 {
   res.render('pages/test');
+  populateCourses();
 });
 
 //Log out ----------------------------------------------------------------------------------------------
@@ -202,12 +188,9 @@ app.get('/logout', (req, res) =>
 });
 
 //Search courses -----------------------------------------------
-// Grabs entire table in one query and slices it up, may be bad
-
-async function populateCourses(){
-  all_courses = await db.query('SELECT * FROM courseregistry');
-  console.log(all_courses[0].classcode);
-  console.log('what the fuck');
+// Makes a new array of course objects
+async function populateCourses(res){
+  all_courses = await db.query('SELECT * FROM courseregistry;')
 }
 
 async function searchForCourse(input)
