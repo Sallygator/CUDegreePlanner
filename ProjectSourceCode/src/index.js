@@ -26,8 +26,8 @@ class course {
   this.counts_for = counts_for
 }};
 
-const all_courses = []
-const queried_course = ""
+var all_courses = []
+var queried_course = ""
 
 // *****************************************************
 // <!-- Section 2 : Connect to DB -->
