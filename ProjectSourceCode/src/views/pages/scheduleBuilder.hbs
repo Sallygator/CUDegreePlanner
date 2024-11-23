@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,6 +35,12 @@
             margin-left: 0%;
             border: 5px solid #605b5b00;
             border-radius: 10px;
+        }
+
+        .card
+        {
+            width: 80%;
+            height: 3
         }
 
         .sidebar input[type="text"] /* input text box */
@@ -104,29 +111,33 @@
             padding: 10px;
         }
     </style>
-    
+
     {{!-- Handlebars Scripting --}}
+
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
     <script>
-      // compile the template
-      var template = Handlebars.compile("Handlebars <b>{{doesWhat}}</b>");
-      // execute the compiled template and print the output to the console
-      console.log(template({ doesWhat: "rocks!" }));
+        var source = document.getElementById('course-list').innerHTML;
+        var template = Handlebars.compile(source);
+        var context = {{all_courses}};
+        var html = template(context);
+        document.getElementById('initial-courses').innerHTML = html;
     </script>
 
     {{!-- Custom Scripting --}}
-    {{!<script src="CUDegreePlanner\ProjectSourceCode\src\resources\js\script.js"></script>}}
+    {{!
+    <script src="CUDegreePlanner\ProjectSourceCode\src\resources\js\script.js"></script>}}
+
 
     {{!-- Jquery Scripting --}}
-
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
     <script>
-    $( function() {
-        $( "#sortable1, #sortable2" ).sortable({
-        connectWith: ".connectedSortable"
-        }).disableSelection();
-    } );
+        $(function () {
+            $(".connectedSortable").sortable({
+                connectWith: ".connectedSortable"
+            }).disableSelection();
+        });
     </script>
 </head>
 <body>
@@ -134,13 +145,33 @@
     <div class="container">
         <div class="sidebar">
             <div class="col-md">
+                <input type="text" placeholder="Search..." id="course_search" onsubmit="searchForCourse()">
+                <div id="initial-courses">
+                    <ul id="course_search_results" class="connectedSortable">
+            {{#each all_courses}}
+                <li>
+                    <div class="row">
+                        <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)">
+                            <div class="card-body">
+                                <h3 class="card-title">{{name}}</h3>
+                                <p class="card-text">{{classcode}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {{/each}}
+        </ul>
+                </div>
+            </div>
+        </div>
+
         <input type="text" placeholder="Search..." id="course_search" onsubmit="searchForCourse()">
             <ul id="course_search_results" class="connectedSortable">
                 {{#each all_courses}}
                 {{course_card}}
                 {{/each}}
             </ul>
-    </div>
+      </div>
     </div>
 
         <!-- Main Content -->
@@ -150,12 +181,12 @@
                 <h3>{{this.name}}</h3>
                 <div class="semester">
                     <p>Fall</p>
+                    <ul id="{{this.name}}_Fall" class="connectedSortable"></ul>
                 </div>
-                <ul id="{{this.name}}_Fall" class="connectedSortable"></ul>
                 <div class="semester">
                     <p>Spring</p>
+                    <ul id="{{this.name}}_Spring" class="connectedSortable"></ul>
                 </div>
-                <ul id="{{this.name}}_Spring" class="connectedSortable"></ul>
             </div>
             {{/each}}
         </div>
@@ -166,4 +197,5 @@
         Semester boxes are currently empty.
     </div>
 </body>
+
 </html>

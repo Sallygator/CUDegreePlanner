@@ -42,7 +42,7 @@ const hbs = handlebars.create({
 
 // database configuration
 const dbConfig = {
-  host: 'db', // the database server
+  host: 'dpg-ct0cvi9opnds73abg2mg-a', // the database server
   port: 5432, // the database port
   database: process.env.POSTGRES_DB, // the database name
   user: process.env.POSTGRES_USER, // the user account to connect with
@@ -102,12 +102,14 @@ app.get('/register', async (req, res) =>
   res.render('pages/register', {user: req.session.user}); //User item in session
 });
   
-app.get('/scheduleBuilder', (req, res) => 
+app.get('/scheduleBuilder', async (req, res) => 
 {
   if(!req.session.user)
   {
     return res.redirect('/login');
   }
+  var all_courses = await db.query('SELECT * FROM courseregistry;');
+  console.log(all_courses);
   res.render('pages/scheduleBuilder', 
     {
       years: [
@@ -116,7 +118,8 @@ app.get('/scheduleBuilder', (req, res) =>
           { name: "Year 3" },
           { name: "Year 4" }
       ],
-      user: req.session.user
+      user: req.session.user,
+      all_courses
   });
 });
 
@@ -181,8 +184,7 @@ app.post('/login', async (req, res) =>
     app.use(auth);
     console.log("User found, time to register");
     req.session.user = user;
-    req.session.save();
-    populateCourses();
+    await req.session.save();
     return res.redirect('/scheduleBuilder');
   }
 });
@@ -202,13 +204,6 @@ app.get('/logout', (req, res) =>
 });
 
 //Search courses -----------------------------------------------
-// Grabs entire table in one query and slices it up, may be bad
-
-async function populateCourses(){
-  all_courses = await db.query('SELECT * FROM courseregistry');
-  console.log(all_courses[0].classcode);
-  console.log('what the fuck');
-}
 
 async function searchForCourse(input)
 {
