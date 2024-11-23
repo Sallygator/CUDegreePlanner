@@ -148,22 +148,23 @@
                 <input type="text" placeholder="Search..." id="course_search" onsubmit="searchForCourse()">
                 <div id="initial-courses">
                     <ul id="course_search_results" class="connectedSortable">
-            {{#each all_courses}}
-                <li>
-                    <div class="row">
-                        <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)">
-                            <div class="card-body">
-                                <h3 class="card-title">{{name}}</h3>
-                                <p class="card-text">{{classcode}}</p>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            {{/each}}
-        </ul>
-                </div>
+                        {{#each all_courses}}
+                            <li>
+                                <div class="row">
+                                    <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)">
+                                        <div class="card-body">
+                                            <h3 class="card-title">{{name}}</h3>
+                                            <p class="card-text">{{classcode}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>  
             </div>
         </div>
+    </div>
 
         <input type="text" placeholder="Search..." id="course_search" onsubmit="searchForCourse()">
             <ul id="course_search_results" class="connectedSortable">
@@ -181,11 +182,15 @@
                 <h3>{{this.name}}</h3>
                 <div class="semester">
                     <p>Fall</p>
-                    <ul id="{{this.name}}_Fall" class="connectedSortable"></ul>
+                    <ul id="{{this.name}}_Fall" class="connectedSortable">
+                        <li></li>
+                    </ul>
                 </div>
                 <div class="semester">
                     <p>Spring</p>
-                    <ul id="{{this.name}}_Spring" class="connectedSortable"></ul>
+                    <ul id="{{this.name}}_Spring" class="connectedSortable">
+                        <li></li>
+                    </ul>
                 </div>
             </div>
             {{/each}}
