@@ -87,12 +87,14 @@ app.get('/register', async (req, res) =>
   res.render('pages/register', {user: req.session.user}); //User item in session
 });
   
-app.get('/scheduleBuilder', (req, res) => 
+app.get('/scheduleBuilder', async (req, res) => 
 {
   if(!req.session.user)
   {
     return res.redirect('/login');
   }
+  var all_courses = await db.query('SELECT * FROM courseregistry;');
+  console.log(all_courses);
   res.render('pages/scheduleBuilder', 
     {
       years: [
@@ -101,7 +103,8 @@ app.get('/scheduleBuilder', (req, res) =>
           { name: "Year 3" },
           { name: "Year 4" }
       ],
-      user: req.session.user
+      user: req.session.user,
+      all_courses
   });
 });
 
@@ -166,8 +169,7 @@ app.post('/login', async (req, res) =>
     app.use(auth);
     console.log("User found, time to register");
     req.session.user = user;
-    req.session.save();
-    populateCourses();
+    await req.session.save();
     return res.redirect('/scheduleBuilder');
   }
 });
@@ -177,7 +179,6 @@ app.post('/login', async (req, res) =>
 app.get('/test', (req, res) => 
 {
   res.render('pages/test');
-  populateCourses();
 });
 
 //Log out ----------------------------------------------------------------------------------------------
@@ -188,10 +189,6 @@ app.get('/logout', (req, res) =>
 });
 
 //Search courses -----------------------------------------------
-// Makes a new array of course objects
-async function populateCourses(res){
-  all_courses = await db.query('SELECT * FROM courseregistry;')
-}
 
 async function searchForCourse(input)
 {
