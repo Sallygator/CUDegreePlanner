@@ -8,4 +8,38 @@ Points to include in the minutes would be:
 - Alternative actions/options discussed
 - Follow-up items, including agreed-on roles and responsibilities
 ---------------------------------------------------------------------------------------
-    
+
+Nick: 
+-using handlebars to make website layout,
+-working on drag and drop implimentation when we add real classes/data
+
+Hannah:
+- working on index.js file for register, login and pages
+- register html page 
+
+Truman:
+- put together webscrapper code.
+- has a list of all the CS classes
+    - data scrubbed the list as mentioned in previous meeting
+
+Daralynn:
+- login html page
+- keeping up with tasks on storyboard/organization 
+- modified yaml file 
+
+Marcus:
+- working on implimenting database datamodel
+- working on coding database creation scripts
+
+Announcements:
+- Anytime you are doing work, make sure there is an issue on the project board related to it. Keep that up-to-date
+- Keep github up to date with any new information. Both code and documentation related. This will make the final github cleanup easier.
+- We need to get a working product asap
+
+Waiting on
+- Database layout
+- Populated database 
+
+Whats Next
+- basic website pages can start to be coded. 
+- basic api functionalities can start to be coded.     

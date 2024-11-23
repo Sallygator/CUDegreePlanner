@@ -13,6 +13,22 @@ const session = require('express-session'); // To set the session object. To sto
 const bcrypt = require('bcryptjs'); //  To hash passwords
 const axios = require('axios'); // To make HTTP requests from our server. We'll learn more about it in Part C.
 
+class course {
+  constructor(department, course_code, course_name, description, hours_elective, hours_core, hours_foundational, pre_reqs, counts_for) {
+  this.department = department
+  this.course_code = course_code
+  this.course_name = course_name
+  this.description = description
+  this.hours_elective = hours_elective
+  this.hours_core = hours_core
+  this.hours_foundational = hours_foundational
+  this.pre_reqs = pre_reqs
+  this.counts_for = counts_for
+}};
+
+var all_courses = []
+var queried_course = ""
+
 // *****************************************************
 // <!-- Section 2 : Connect to DB -->
 // *****************************************************
@@ -77,25 +93,46 @@ app.use(
 // TODO - Include your API routes here
 app.get('/', async (req, res) => 
 {
-  res.redirect('/login');
+  res.render('pages/home', {user: req.session.user});
 });
 
 //Register ----------------------------------------------------------------------------------------------
 app.get('/register', async (req, res) => 
 {
-  res.render('pages/register');
+  res.render('pages/register', {user: req.session.user}); //User item in session
 });
   
+app.get('/scheduleBuilder', async (req, res) => 
+{
+  if(!req.session.user)
+  {
+    return res.redirect('/login');
+  }
+  var all_courses = await db.query('SELECT * FROM courseregistry;');
+  console.log(all_courses);
+  res.render('pages/scheduleBuilder', 
+    {
+      years: [
+          { name: "Year 1" },
+          { name: "Year 2" },
+          { name: "Year 3" },
+          { name: "Year 4" }
+      ],
+      user: req.session.user,
+      all_courses
+  });
+});
+
 app.post('/register', async (req, res) =>
 {
-  const { username, password, degree, major, minor } = req.body; //getting request info
+  const { username, password, degree } = req.body; //getting request info
   try
   {
   //hash the password using bcrypt library
   const hash = await bcrypt.hash(req.body.password, 10);
 
   // To-DO: Insert username and hashed password into the 'users' table
-  await db.query('INSERT INTO users(username, password, degree, major, minor) VALUES ($1, $2, $3, $4, $5);', [username, hash, degree, major, minor]);
+  await db.query('INSERT INTO users(username, password, degree) VALUES ($1, $2, $3);', [username, hash, degree]);
   console.log("User was inserted into the database");
   return res.redirect('/login'); //it worked, redirect to login route
   }
@@ -110,57 +147,73 @@ app.post('/register', async (req, res) =>
 //Login ----------------------------------------------------------------------------------------------
 app.get('/login', (req, res) => 
 {
-  res.render('pages/login');
+  res.render('pages/login', {user: req.session.user});
 });
 
-app.post('/login', async (req, res) =>
+
+app.post('/login', async (req, res) => 
 {
-  const {username, password } = req.body; //getting the request info
-  const userRes = await db.query('SELECT * FROM users WHERE username = $1', [username]); //find them by username
+  const { username, password } = req.body; // getting the request info
+  const userRes = await db.query('SELECT * FROM users WHERE username = $1', [username]); // find them by username
 
-  if(userRes.length == 0) //user isnt found
-  {
-    console.log("User was not found.")
-    return res.redirect('/register'); //back to register pg
+  if (userRes.length == 0) { // user isn't found
+    console.log("User was probably not inserted");
+    return res.redirect('/register'); // back to register pg
   }
 
-  const user = userRes[0]; //user object found
-  // check if password from request matches with password in DB
-  const match = await bcrypt.compare(req.body.password, user.password);
-  if(!match) //couldnt find a full match 
-  {
-    console.log("Found the username, but not a password");
-    return res.render('pages/login',
-    {message: 'Incorrect username or password.'});
-  }
-  else //found a match, save user details in session like in lab 7
-  {
-    // Authentication Middleware
-    const auth = (req, res, next) => 
-      {
-        if (!req.session.user) 
-        {
-          // Default to login page.
-          return res.redirect('/login');
-        }
-        next();
-      };
+  const user = userRes[0]; // user object found
+  const storedPassword = user.password.toString('utf-8'); // Convert BTEA to string
+
+  // Check if the password from request matches with password in DB
+  const match = await bcrypt.compare(password, storedPassword); // Compare with the string value
   
-  // Authentication Required
-  app.use(auth);
+  if (!match) { // couldn't find a full match 
+    console.log("Found the username, but not a password");
+    return res.render('pages/login', { message: 'Incorrect username or password.', user: req.session.user });
+  } else { // found a match, save user details in session like in lab 7
+    // Authentication Middleware
+    const auth = (req, res, next) => {
+      if (!req.session.user) {
+        // Default to login page.
+        return res.redirect('/login');
+      }
+      next();
+    };
+
+    // Authentication Required
+    app.use(auth);
     console.log("User found, time to register");
     req.session.user = user;
-    req.session.save();
-    return res.redirect('/register');
+    await req.session.save();
+    return res.redirect('/scheduleBuilder');
   }
+});
+
+// test IS A TEMPORARY VARIABLE HANNAH, CHANGE THE NAME TO SMT SMARTER LATER !!!!
+
+app.get('/test', (req, res) => 
+{
+  res.render('pages/test');
 });
 
 //Log out ----------------------------------------------------------------------------------------------
 app.get('/logout', (req, res) => 
 {
-  req.session.destroy();
-  res.render('pages/logout');
+  req.session.destroy(); //destory the session
+  res.redirect('/'); //back to home after logging out
 });
+
+//Search courses -----------------------------------------------
+
+async function searchForCourse(input)
+{
+  var queriedCourse = await db.query('SELECT * from courseregistry WHERE ClassCode = $input');
+
+  // If query not found, return null or something to tell the sight it wasn't found
+  if(queriedCourse == NULL) { queriedCourse = ""; return; } // Log something here
+  
+  queried_course = queriedCourse;
+}
 
 // *****************************************************
 // <!-- Section 5 : Start Server-->
