@@ -13,6 +13,21 @@ const session = require('express-session'); // To set the session object. To sto
 const bcrypt = require('bcryptjs'); //  To hash passwords
 const axios = require('axios'); // To make HTTP requests from our server. We'll learn more about it in Part C.
 
+class course {
+  constructor(department, course_code, course_name, description, hours_elective, hours_core, hours_foundational, pre_reqs, counts_for) {
+  this.department = department
+  this.course_code = course_code
+  this.course_name = course_name
+  this.description = description
+  this.hours_elective = hours_elective
+  this.hours_core = hours_core
+  this.hours_foundational = hours_foundational
+  this.pre_reqs = pre_reqs
+  this.counts_for = counts_for
+}};
+
+var all_courses = []
+var queried_course = ""
 
 // *****************************************************
 // <!-- Section 2 : Connect to DB -->
