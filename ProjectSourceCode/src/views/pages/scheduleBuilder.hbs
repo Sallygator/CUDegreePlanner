@@ -124,6 +124,13 @@
     {{!-- Custom Scripting --}}
     {{!
     <script src="CUDegreePlanner\ProjectSourceCode\src\resources\js\script.js"></script>}}
+    
+    {{! Displays class info when a class card is clicked}}
+    <script>
+        function displayclassInfo(id){
+            document.getElementById().innerHTML;
+        }
+    </script>
 
 
 
@@ -151,7 +158,7 @@
             {{#each all_courses}}
                 <li>
                     <div class="row">
-                        <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)">
+                        <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)" onclick="displayclassInfo({{classcode}})">
                             <div class="card-body">
                                 <h3 class="card-title">{{name}}</h3>
                                 <p class="card-text">{{classcode}}</p>
@@ -172,11 +179,15 @@
                 <h3>{{this.name}}</h3>
                 <div class="semester">
                     <p>Fall</p>
-                    <ul id="{{this.name}}_Fall" class="connectedSortable"></ul>
+                    <ul id="{{this.name}}_Fall" class="connectedSortable">
+                        <li></li>
+                    </ul>
                 </div>
                 <div class="semester">
                     <p>Spring</p>
-                    <ul id="{{this.name}}_Spring" class="connectedSortable"></ul>
+                    <ul id="{{this.name}}_Spring" class="connectedSortable">
+                        <li></li>
+                    </ul>
                 </div>
             </div>
             {{/each}}
