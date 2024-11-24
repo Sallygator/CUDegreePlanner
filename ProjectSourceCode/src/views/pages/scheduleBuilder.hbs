@@ -17,8 +17,8 @@
 
         .container /* holds all content */
         {
-            display: flex;
-            flex: 1;
+            display: auto;
+            
             overflow: hidden;
             width: 100%;
         }
@@ -115,13 +115,6 @@
     {{!-- Handlebars Scripting --}}
 
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
-    <script>
-        var source = document.getElementById('course-list').innerHTML;
-        var template = Handlebars.compile(source);
-        var context = {{all_courses}};
-        var html = template(context);
-        document.getElementById('initial-courses').innerHTML = html;
-    </script>
 
     {{!-- Custom Scripting --}}
     {{!
@@ -137,9 +130,9 @@
     {{!-- Search & Prereq Functions Below --}}
 
     <script>
-        function searchForCourse(course) // Happens when a course is searched for in the bar. Prompt user for no spaces because we have it set as 'ABCD1234'
+        function searchForCourse(classcode) // Happens when a course is searched for in the bar. Prompt user for no spaces because we have it set as 'ABCD1234'
         {
-            document.getElementsByName(course).innerHTML; 
+            document.getElementsByID(classcode).innerHTML; 
         }
     </script>
 
@@ -147,6 +140,14 @@
         function getCoursePreReqs(course)
         {
             document.getElementsByName(course).entries; // Nick I have no fucking clue what I'm doing
+        }
+    </script>
+
+    <script>
+        function createFooterDescription(classcode, name, description){
+            document.getElementById("footer-class-title").innerHTML = name;
+            document.getElementById("footer-class-code").innerHTML = classcode;
+            document.getElementById("footer-class-description").innerHTML = description;
         }
     </script>
 
@@ -165,7 +166,8 @@
 </head>
 <body>
     <!-- Sidebar -->
-    <div class="container">
+        <!-- Main Content -->
+    <div class="main">
         <div class="sidebar">
             <div class="col-md">
                 <input type="text" placeholder="Search..." id="course_search" onsubmit="searchForCourse()">
@@ -174,10 +176,13 @@
                         {{#each all_courses}}
                             <li>
                                 <div class="row">
-                                    <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)">
+                                    <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)" onclick="createFooterDescription('{{classcode}}','{{name}}','{{description}}')">
                                         <div class="card-body">
-                                            <h3 class="card-title">{{name}}</h3>
+                                            <h6 class="card-title">{{name}}</h6>
                                             <p class="card-text">{{classcode}}</p>
+                                            {{#if prerecs}}
+                                                <p id="{{prerecs}}_required">Requires {{prerecs}}</p>
+                                            {{/if}}
                                         </div>
                                     </div>
                                 </div>
@@ -187,19 +192,6 @@
                 </div>  
             </div>
         </div>
-    </div>
-
-        <input type="text" placeholder="Search..." id="course_search" onsubmit="searchForCourse()">
-            <ul id="course_search_results" class="connectedSortable">
-                {{#each all_courses}}
-                {{course_card}}
-                {{/each}}
-            </ul>
-      </div>
-    </div>
-
-        <!-- Main Content -->
-        <div class="main">
             {{#each years}}
             <div class="year">
                 <h3>{{this.name}}</h3>
@@ -222,7 +214,11 @@
 
     <!-- Footer -->
     <div class="footer" id="footer-box">
-        Semester boxes are currently empty.
+        <div class="card">
+            <h1 id="footer-class-title">No class selected.</h1>
+            <p id="footer-class-code"></p>
+            <p id="footer-class-description"></p>
+        </div>
     </div>
 </body>
 
