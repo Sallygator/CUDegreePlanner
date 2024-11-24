@@ -17,8 +17,8 @@
 
         .container /* holds all content */
         {
-            display: flex;
-            flex: 1;
+            display: auto;
+            
             overflow: hidden;
             width: 100%;
         }
@@ -29,7 +29,7 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
             overflow-y: auto;
             background-color: rgba(0, 0, 0, 0.731); 
-            display: flex;
+            display: auto;
             margin-top: 3%;
             margin-bottom: 3%;
             margin-left: 0%;
@@ -64,19 +64,19 @@
 
         .year /* the years */
         {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
+            width: fit-content;
+            height: fit-content;
             background-color: rgba(0, 0, 0, 0.731); 
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
             border: 5px solid #605b5b00;
             border-radius: 9px;
-            padding: 5px;
+            padding: 10px;
         }
 
-        .year h3 
+        .year h3 /* But it's not h3 don't be fooled */
         {
             text-align: center;
+            display: auto;
             margin: 5px 5px;
             background-color: #727eed75;
             padding-right: 6px;
@@ -87,7 +87,7 @@
 
         .semester 
         {
-            flex: 1;
+            display: auto;
             padding: 10px;
             margin: 5px;
             border: 1px solid #111111;
@@ -99,6 +99,7 @@
 
         .semester p
         {
+            display: auto;
             margin-top: 0px;
             text-align: center;
             color: #c5c5c5;
@@ -115,13 +116,6 @@
     {{!-- Handlebars Scripting --}}
 
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
-    <script>
-        var source = document.getElementById('course-list').innerHTML;
-        var template = Handlebars.compile(source);
-        var context = {{all_courses}};
-        var html = template(context);
-        document.getElementById('initial-courses').innerHTML = html;
-    </script>
 
     {{!-- Custom Scripting --}}
     {{!
@@ -131,6 +125,30 @@
     <script>
         function displayclassInfo(id){
             document.getElementById().innerHTML;
+        }
+    </script>
+
+    {{!-- Search & Prereq Functions Below --}}
+
+    <script>
+        function searchForCourse(classcode) // Happens when a course is searched for in the bar. Prompt user for no spaces because we have it set as 'ABCD1234'
+        {
+            document.getElementsByID(classcode).innerHTML; 
+        }
+    </script>
+
+    <script>
+        function getCoursePreReqs(course)
+        {
+            document.getElementsByName(course).entries; // Nick I have no fucking clue what I'm doing
+        }
+    </script>
+
+    <script>
+        function createFooterDescription(classcode, name, description, prerecs){
+            document.getElementById("footer-class-title").innerHTML = name;
+            document.getElementById("footer-class-code").innerHTML = classcode;
+            document.getElementById("footer-class-description").innerHTML = description;
         }
     </script>
 
@@ -149,7 +167,8 @@
 </head>
 <body>
     <!-- Sidebar -->
-    <div class="container">
+        <!-- Main Content -->
+    <div class="main">
         <div class="sidebar">
             <div class="col-md">
                 <input type="text" placeholder="Search..." id="course_search" onsubmit="searchForCourse()">
@@ -158,10 +177,13 @@
                         {{#each all_courses}}
                             <li>
                                 <div class="row">
-                                    <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)">
+                                    <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)" onclick="createFooterDescription('{{classcode}}','{{name}}','{{description}}')">
                                         <div class="card-body">
-                                            <h3 class="card-title">{{name}}</h3>
+                                            <h6 class="card-title">{{name}}</h6>
                                             <p class="card-text">{{classcode}}</p>
+                                            {{#if prerecs}}
+                                                <p id="{{prerecs}}_required">Requires {{prerecs}} Credit(s)</p>
+                                            {{/if}}
                                         </div>
                                     </div>
                                 </div>
@@ -171,32 +193,23 @@
                 </div>  
             </div>
         </div>
-    </div>
-
-        <input type="text" placeholder="Search..." id="course_search" onsubmit="searchForCourse()">
-            <ul id="course_search_results" class="connectedSortable">
-                {{#each all_courses}}
-                {{course_card}}
-                {{/each}}
-            </ul>
-      </div>
-    </div>
-
-        <!-- Main Content -->
-        <div class="main">
             {{#each years}}
             <div class="year">
                 <h3>{{this.name}}</h3>
                 <div class="semester">
-                    <p>Fall</p>
-                    <ul id="{{this.name}}_Fall" class="connectedSortable">
-                        <li></li>
+                    <h6>Fall</h6>
+                    <ul id="{{this.name}}_Fall" class="connectedSortable"  >
+                        <li>
+                           Drag and drop items here!
+                        </li>
                     </ul>
                 </div>
                 <div class="semester">
-                    <p>Spring</p>
+                    <h6>Spring</h6>
                     <ul id="{{this.name}}_Spring" class="connectedSortable">
-                        <li></li>
+                        <li>
+                            Drag and drop items here!
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -206,7 +219,11 @@
 
     <!-- Footer -->
     <div class="footer" id="footer-box">
-        Semester boxes are currently empty.
+        <div class="card">
+            <h4 id="footer-class-title">No class selected.</h4>
+            <p id="footer-class-code"></p>
+            <p id="footer-class-description"></p>
+        </div>
     </div>
 </body>
 
