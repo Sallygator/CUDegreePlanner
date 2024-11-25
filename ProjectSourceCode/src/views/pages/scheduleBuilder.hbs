@@ -151,16 +151,37 @@
         }
     </script>
 
+    {{! Handles moving cards programatically}}
     <script>
         function moveClassCard(classid, targetid){
             var card = document.getElementById(classid);
-            console.log(card);
             document.getElementById(targetid).append(card);
         }
 
         function setupTemplate(){
             moveClassCard("CSCI1300", "Year 1_Fall");
-            console.log("test")
+            moveClassCard("CSCI1200", "Year 1_Fall");
+            moveClassCard("MATH1300", "Year 1_Fall");
+            moveClassCard("PHYS1110", "Year 1_Fall");
+        }
+    </script>
+
+    {{! Logic for checking pre-recs}}
+    <script>
+        function checkPrerecs(classid){
+            var card = document.getElementById(classid);
+            var prerecs = document.getElementById(classid + "_prerecs");
+            if prerecs != null {
+                var current_table = card.parentElement()
+                var year = parseInt(current_table.id().charAt(5));
+                var semester = current_table.id().charAt(7);
+                
+                var prerecs_parsed = prerecs.split(",");
+
+                for (i = 0; i < prerecs_parsed.length(); i++;){
+                document.getElementById("")
+                }
+            }
         }
     </script>
 
@@ -188,15 +209,16 @@
                     <ul id="course_search_results" class="connectedSortable">
                         {{#each all_courses}}
                             <li>
-                                <div class="row">
-                                    <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)" onclick="createFooterDescription('{{classcode}}','{{name}}','{{description}}')">
-                                        <div class="card-body">
-                                            <h6 class="card-title">{{name}}</h6>
-                                            <p class="card-text">{{classcode}}</p>
-                                            {{#if prerecs}}
-                                                <p id="{{prerecs}}_required">Requires {{prerecs}}</p>
-                                            {{/if}}
-                                        </div>
+                                <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)" onclick="createFooterDescription('{{classcode}}','{{name}}','{{description}}')">
+                                    <div class="card-body">
+                                        <h6 class="card-title">{{name}}</h6>
+                                        <p class="card-text">{{classcode}}</p>
+                                        {{#if prerecs}}
+                                            <p id="{{classcode}}_required">Requires {{prerecs}}</p>
+                                        {{/if}}
+                                        {{#if countsfor}}
+                                            <p id="{{classcode}}_countsfor"> Counts for {{countsfor}}</p>
+                                        {{/if countsfor}}
                                     </div>
                                 </div>
                             </li>
