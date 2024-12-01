@@ -20,11 +20,15 @@ _An interface to assist CU Boulder Computer Science Undergraduate Students with 
 ### Features 
 
 - **Search Functionality**
+- **Home page**
+- **Database Server**
+- **Database**
 - **Drag and Drop Classes**
 - **Log in**
 - **Registration**
 - **Ralphie Webpage Pet**
 - **[WIP] Highlighting of Prerequesites**
+- **Encripted Passwords**
 
 ## 🛠 Technology Stack
 
