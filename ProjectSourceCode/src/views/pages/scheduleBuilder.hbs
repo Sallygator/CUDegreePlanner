@@ -144,6 +144,105 @@
         }
     </script>
 
+    {{! Handles moving cards programatically}}
+    <script>
+        function moveClassCard(classid, targetid){
+            var card = document.getElementById(classid);
+            document.getElementById(targetid).append(card);
+        }
+
+        function setupTemplate(){
+            moveClassCard("CSCI1300", "Year 1_Fall");
+            moveClassCard("CSCI1200", "Year 1_Fall");
+            moveClassCard("MATH1300", "Year 1_Fall");
+            moveClassCard("PHYS1110", "Year 1_Fall");
+        }
+    </script>
+
+    {{! Logic for checking pre-recs
+    So, the reason this is challenging is there are three scenarios:
+    1. 
+    }}
+    <script>
+        function checkPrerecs(classid){
+            var card = document.getElementById(classid);
+            var prerecs = document.getElementById(classid + "_prerecs");
+            var current_table = card.parentElement()
+            console.log(prerecs);
+            if (prerecs != null) {
+                var year = parseInt(current_table.id().charAt(5));
+                var semester = current_table.id().charAt(7);
+                
+                var prerecs_parsed = prerecs.innerHTML.split(",");
+                var satisfied = new Array(prerecs_parsed.length);
+
+                for (i = 1; i <= year; i++){
+                    var check_year_fall = document.getElementById("Year " + i + "_Fall")
+                    for (j = 0; j < check_year_fall.childElementCount; j++) {
+                        var check_card = check_year_fall.children.item(j).children.item(0).children(0).children(0).item;
+                        var check_countsfor = document.getElementById(check_card.id + "_countsfor");
+                        if (check_countsfor != null) {
+                            for (k = 0; k < prerecs_parsed.length(); k++){
+                                if (check_countsfor.innerHTML == prerecs_parsed[k]){
+                                    satisfied[k] = true;
+                                }
+                            }
+                        }
+                    }
+                    if (semester == "S"){
+                        var check_year_fall = document.getElementById("Year " + year + "_Fall")
+                        for (j = 0; j < check_year_fall.childElementCount; j++) {
+                            var check_card = check_year_fall.children.item(j).children.item(0).children(0).children(0).item;
+                            var check_countsfor = document.getElementById(check_card.id + "_countsfor");
+                            if (check_countsfor != null) {
+                                for (k = 0; k < prerecs_parsed.length(); k++){
+                                    if (check_countsfor.innerHTML == prerecs_parsed[k]){
+                                        satisfied[k] = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    var check_year_spring = document.getElementById("Year " + i + "_Spring")
+                    for (j = 0; j < check_year_spring.childElementCount; j++){
+                        var check_card = check_year_spring.children.item(j).children.item(0).children(0).children(0).item;
+                        var check_countsfor = document.getElementById(check_card.id + "_countsfor");
+                        if (check_countsfor != null) {
+                            for (k = 0; k < prerecs_parsed.length(); k++){
+                                if (check_countsfor.innerHTML == prerecs_parsed[k]){
+                                    satisfied[k] = true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (satisfied.every(Boolean)) {
+                    prerecs.innerHTML.color = "green";
+                    console.log("satisfired")
+                } else {
+                    prerecs.innerHTML.color = "red";
+                }
+        }
+    }
+
+    function checkAllCourses(){
+        for (i = 1; i < 5; i++){
+            var falls = document.getElementById("Year " + i + "_Fall");
+            for (j = 0; j < falls.childElementCount; j++){
+                var card = falls.children.item(j);
+                checkPrerecs(card.id);
+            }
+            var springs = document.getElementById("Year " + i + "_Spring");
+            for (j = 0; j < springs.childElementCount; j++){
+                var card = springs.children[j];
+                checkPrerecs(card.id);
+            }
+        }
+    }
+    </script>
+
+
     {{!-- Jquery Scripting --}}
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -199,7 +298,7 @@
     </script>
 
 </head>
-<body>
+<body onload="setupTemplate()">
     <!-- Sidebar -->
         <!-- Main Content -->
     <div class="main">
