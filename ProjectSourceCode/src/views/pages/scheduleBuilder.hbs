@@ -48,7 +48,7 @@
             width: 90%;
             margin: 10px;
             padding: 5px;
-            background-color: rgb(0, 0, 0); 
+            background-color: hwb(34 42% 33%); 
             border: 1px solid #111111;
             border-radius: 4px;
         }
@@ -111,6 +111,12 @@
             background-color: #605b5bb3;
             padding: 10px;
         }
+
+        .button
+        {
+            width: 75px;
+            height: 25px;
+        }
     </style>
 
     {{!-- Handlebars Scripting --}}
@@ -129,20 +135,6 @@
     </script>
 
     {{!-- Search & Prereq Functions Below --}}
-
-    <script>
-        function searchForCourse(classcode) // Happens when a course is searched for in the bar. Prompt user for no spaces because we have it set as 'ABCD1234'
-        {
-            document.getElementsByID(classcode).innerHTML; 
-        }
-    </script>
-
-    <script>
-        function getCoursePreReqs(course)
-        {
-            document.getElementsByName(course).entries; // Nick I have no fucking clue what I'm doing
-        }
-    </script>
 
     <script>
         function createFooterDescription(classcode, name, description, prerecs){
@@ -262,6 +254,49 @@
             }).disableSelection();
         });
     </script>
+
+    <script>
+
+        function searchForCourses()
+        {
+            var searched_value = document.getElementById('search_bar').value;
+            var courses = document.getElementById('course_search_results');
+
+           //alert(courses.children.item(1).children.item(0).id);
+           //alert(courses.children.item(1).children.item(0).children.item(0).children.item(0).id);
+
+            for(let i = 0; i < courses.children.length; i++){
+
+                if(searched_value == "" ) // Bad inputs NOT handled yet
+                {
+                    for(let i = 0; i < courses.children.length; i++){
+                        courses.children.item(i).style.visibility = "visible";
+                    }
+                    return;
+                }
+               
+                var course = courses.children.item(i).children.item(0).id;
+                var course_title = courses.children.item(i).children.item(0).children.item(0).children.item(0).id;
+
+                //alert(course_title.innerHTML);
+
+                if(searched_value == course_title || searched_value == course)
+                {
+                    courses.children.item(i).style.visibility = "visible";
+                    courses.children.item(i).style.sen
+
+                }
+
+                else
+                {
+                    //hide 
+                    courses.children.item(i).style.visibility = "hidden";
+                }
+            }
+        }
+
+    </script>
+
 </head>
 <body onload="setupTemplate()">
     <!-- Sidebar -->
@@ -269,22 +304,22 @@
     <div class="main">
         <div class="sidebar">
             <div class="col-md">
-                <input type="text" placeholder="Search..." id="course_search" onsubmit="searchForCourse()">
-                <div id="initial-courses">
-                    <ul id="course_search_results" class="connectedSortable">
+                    <div id="initial-courses">
+                       
+                       <input id = "search_bar" placeholder = "Search for a course..." type="text">
+                       <button id = "search_button" class = "button" onclick="searchForCourses()"> Search!</button>
+                       
+                        <ul id="course_search_results" class="connectedSortable">
                         {{#each all_courses}}
-                            <li>
-                                <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)" onclick="createFooterDescription('{{classcode}}','{{name}}','{{description}}')" ondrop="checkAllCourses()">
-                                    <div class="card-body">
-                                        <h6 class="card-title">{{name}}</h6>
-                                        <p class="card-text">{{classcode}}</p>
-                                        {{#if prerecs}}
-                                            <p id="{{classcode}}_required">Requires {{prerecs}}</p>
-                                        {{/if}}
-                                        {{#if countsfor}}
-                                            <p id="{{classcode}}_countsfor"> Counts for {{countsfor}}</p>
-                                        {{/if}}
-                                    </div>
+                            <li id = "{{classcode}}_listentry">
+                                <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)" onclick="createFooterDescription('{{classcode}}','{{name}}','{{description}}')">
+                                        <div id="{{classcode}}_body" class="card-body">
+                                            <h6 id = "{{name}}" class="card-title">{{name}}</h6>
+                                            <p class="card-text">{{classcode}}</p>
+                                            {{#if prerecs}}
+                                                <p id="{{prerecs}}_required">Requires {{prerecs}} Credit(s)</p>
+                                            {{/if}}
+                                        </div>
                                 </div>
                             </li>
                         {{/each}}
