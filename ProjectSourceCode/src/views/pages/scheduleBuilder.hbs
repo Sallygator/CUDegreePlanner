@@ -166,23 +166,87 @@
         }
     </script>
 
-    {{! Logic for checking pre-recs}}
+    {{! Logic for checking pre-recs
+    So, the reason this is challenging is there are three scenarios:
+    1. 
+    }}
     <script>
         function checkPrerecs(classid){
             var card = document.getElementById(classid);
             var prerecs = document.getElementById(classid + "_prerecs");
-            if prerecs != null {
-                var current_table = card.parentElement()
+            var current_table = card.parentElement()
+            console.log(prerecs);
+            if (prerecs != null) {
                 var year = parseInt(current_table.id().charAt(5));
                 var semester = current_table.id().charAt(7);
                 
-                var prerecs_parsed = prerecs.split(",");
+                var prerecs_parsed = prerecs.innerHTML.split(",");
+                var satisfied = new Array(prerecs_parsed.length);
 
-                for (i = 0; i < prerecs_parsed.length(); i++;){
-                document.getElementById("")
+                for (i = 1; i <= year; i++){
+                    var check_year_fall = document.getElementById("Year " + i + "_Fall")
+                    for (j = 0; j < check_year_fall.childElementCount; j++) {
+                        var check_card = check_year_fall.children.item(j).children.item(0).children(0).children(0).item;
+                        var check_countsfor = document.getElementById(check_card.id + "_countsfor");
+                        if (check_countsfor != null) {
+                            for (k = 0; k < prerecs_parsed.length(); k++){
+                                if (check_countsfor.innerHTML == prerecs_parsed[k]){
+                                    satisfied[k] = true;
+                                }
+                            }
+                        }
+                    }
+                    if (semester == "S"){
+                        var check_year_fall = document.getElementById("Year " + year + "_Fall")
+                        for (j = 0; j < check_year_fall.childElementCount; j++) {
+                            var check_card = check_year_fall.children.item(j).children.item(0).children(0).children(0).item;
+                            var check_countsfor = document.getElementById(check_card.id + "_countsfor");
+                            if (check_countsfor != null) {
+                                for (k = 0; k < prerecs_parsed.length(); k++){
+                                    if (check_countsfor.innerHTML == prerecs_parsed[k]){
+                                        satisfied[k] = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    var check_year_spring = document.getElementById("Year " + i + "_Spring")
+                    for (j = 0; j < check_year_spring.childElementCount; j++){
+                        var check_card = check_year_spring.children.item(j).children.item(0).children(0).children(0).item;
+                        var check_countsfor = document.getElementById(check_card.id + "_countsfor");
+                        if (check_countsfor != null) {
+                            for (k = 0; k < prerecs_parsed.length(); k++){
+                                if (check_countsfor.innerHTML == prerecs_parsed[k]){
+                                    satisfied[k] = true;
+                                }
+                            }
+                        }
+                    }
                 }
+
+                if (satisfied.every(Boolean)) {
+                    prerecs.innerHTML.color = "green";
+                    console.log("satisfired")
+                } else {
+                    prerecs.innerHTML.color = "red";
+                }
+        }
+    }
+
+    function checkAllCourses(){
+        for (i = 1; i < 5; i++){
+            var falls = document.getElementById("Year " + i + "_Fall");
+            for (j = 0; j < falls.childElementCount; j++){
+                var card = falls.children.item(j);
+                checkPrerecs(card.id);
+            }
+            var springs = document.getElementById("Year " + i + "_Spring");
+            for (j = 0; j < springs.childElementCount; j++){
+                var card = springs.children[j];
+                checkPrerecs(card.id);
             }
         }
+    }
     </script>
 
 
@@ -209,7 +273,7 @@
                     <ul id="course_search_results" class="connectedSortable">
                         {{#each all_courses}}
                             <li>
-                                <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)" onclick="createFooterDescription('{{classcode}}','{{name}}','{{description}}')">
+                                <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)" onclick="createFooterDescription('{{classcode}}','{{name}}','{{description}}')" ondrop="checkAllCourses()">
                                     <div class="card-body">
                                         <h6 class="card-title">{{name}}</h6>
                                         <p class="card-text">{{classcode}}</p>
@@ -218,7 +282,7 @@
                                         {{/if}}
                                         {{#if countsfor}}
                                             <p id="{{classcode}}_countsfor"> Counts for {{countsfor}}</p>
-                                        {{/if countsfor}}
+                                        {{/if}}
                                     </div>
                                 </div>
                             </li>
