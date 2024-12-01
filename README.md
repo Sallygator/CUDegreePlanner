@@ -19,15 +19,19 @@ _An interface to assist CU Boulder Computer Science Undergraduate Students with 
 
 ### Features 
 
-- **list features here when added**
-- **mark as [WIP] if not completed yet**
+- **Search Functionality**
+- **Drag and Drop Classes**
+- **Log in**
+- **Registration**
+- **Ralphie Webpage Pet**
+- **[WIP] Highlighting of Prerequesites**
 
 ## 🛠 Technology Stack
 
-- **Frontend:** [list here]
-- **Backend:** [list here]
+- **Frontend:** [HTML, Handlebars]
+- **Backend:** [NodeJs]
 - **Database:** [PostgreSQL]
-- **Other Tools and Libraries:** [Add here when needed]
+- **Other Tools and Libraries:** [Visual Studio Code, Git, Github, Mocha, Chai]
 
 ## ⚙ Prerequisites
 
@@ -35,7 +39,6 @@ To run this application, you’ll need the following software installed:
 
 - **Node.js** - [Download](https://nodejs.org/)
 - **Docker** - [Download](https://www.docker.com/products/docker-desktop/)
-- Add additionals
   
 
 ## 🚀 Getting Started
@@ -47,8 +50,13 @@ To set up and run the application locally, follow these steps:
    ```bash
    git clone https://github.com/your-username/your-repo-name.git
    cd your-repo-name
-2. **Set up Docker:**
-3. ** Launch Docker:**
+2. **Navigate to the Docker file:**
+   ```bash
+   cd CUDegree_Planner/ProjectSourceCode
+4. **Launch Docker:**
+   ```bash
+   docker compose up
+5. **Navigate to http://localhost:3000/**
 ## Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
