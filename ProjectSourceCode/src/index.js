@@ -65,6 +65,11 @@ db.connect()
 // <!-- Section 3 : App Settings -->
 // *****************************************************
 
+//dummy function to test the testing functionality, do not remove
+app.get('/welcome', (req, res) => {
+  res.json({status: 'success', message: 'Welcome!'});
+});
+
 // Register `hbs` as our view engine using its bound `engine()` function.
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
@@ -126,6 +131,9 @@ app.get('/scheduleBuilder', async (req, res) =>
 app.post('/register', async (req, res) =>
 {
   const { username, password, degree } = req.body; //getting request info
+  if (!username || !password || !degree) {
+    return res.status(400).json({ message: 'Missing required fields.' });
+  }
   try
   {
   //hash the password using bcrypt library
@@ -139,6 +147,13 @@ app.post('/register', async (req, res) =>
 
   catch(error)
   {
+    
+    // Log the error details for debugging
+    console.error("Error during registration:", error);
+  
+    // Return a 500 Internal Server Error with a message
+    return res.status(500).json({ message: 'Internal server error.' });
+    
     return res.redirect('/register'); //didnt work, go back to the register page
   }
 });
@@ -156,9 +171,9 @@ app.post('/login', async (req, res) =>
   const { username, password } = req.body; // getting the request info
   const userRes = await db.query('SELECT * FROM users WHERE username = $1', [username]); // find them by username
 
-  if (userRes.length == 0) { // user isn't found
+  if (userRes.length == 0) { // User isn't found
     console.log("User was probably not inserted");
-    return res.redirect('/register'); // back to register pg
+    return res.status(401).json({ message: 'Incorrect username or password.' }); // 401 Unauthorized
   }
 
   const user = userRes[0]; // user object found
