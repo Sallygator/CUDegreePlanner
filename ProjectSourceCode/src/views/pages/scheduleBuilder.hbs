@@ -13,7 +13,7 @@
             flex-direction: column;
             height: 100%;
             width: 100%;
-            background: linear-gradient(135deg, hwb(34 42% 33%), #648cc4); /* Gradient background */
+            background: linear-gradient(135deg, rgb(171, 143, 107), #648cc4); /* Gradient background */
         }
 
         .container /* holds all content */
@@ -37,8 +37,9 @@
 
         .card
         {
-            width: 100%;
+            width: 90%;
             height: fit-content;
+            background-color: #cfc08dba;
         }
 
         .sidebar input[type="text"] /* input text box */
@@ -46,7 +47,9 @@
             background-color: rgb(0, 0, 0); 
             border: 1px solid #111111;
             border-radius: 4px;
-            width: 80%;
+            width: 84%;
+            margin-left: 7%;
+            margin-bottom: 1%;
         }
 
         .main /* holds the years */
@@ -91,21 +94,37 @@
             background-color: #111111;
             min-height: 200px; /* Ensures visible empty boxes */
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
+            color: #648cc47f;
         }
 
         .semester p
         {
             display: auto;
             margin-top: 0px;
-            text-align: center;
-            color: #c5c5c5;
+            text-align: left;
+            color: #000000;
+            font-weight: bolder;
+        }
+
+        .semester ul 
+        {
+            list-style-type: none; /* Removes the bullet points */
+            padding-left: 0; /* Removes the default padding on the left */
+            margin-top: 10px; /* Adds spacing between the list and the top of the box */
+        }
+
+        .semester li 
+        {
+            text-align: left;  /* Aligns the text to the left */
+            margin: 0;  /* Ensures there is no extra margin on the list item */
+            padding: 5px 10px; /* Optional: Adds some padding inside the list item */
         }
 
         .footer 
-        {
-            height: 15%;
+        { 
             background-color: #605b5bb3;
             padding: 10px;
+            margin-bottom: 0%;
         }
     </style>
 
@@ -163,7 +182,7 @@
 </head>
 <body>
     <!-- Sidebar -->
-        <!-- Main Content -->
+    <!-- Main Content -->
     <div class="main">
         <div class="sidebar">
             <input type="text" placeholder="Search..." id="course_search" onsubmit="searchForCourse()">
