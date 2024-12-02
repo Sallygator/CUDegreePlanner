@@ -44,7 +44,11 @@
 
         .sidebar input[type="text"] /* input text box */
         {
+
             background-color: rgb(0, 0, 0); 
+            margin: 10px;
+            padding: 5px;
+            background-color: hwb(34 42% 33%); 
             border: 1px solid #111111;
             border-radius: 4px;
             width: 84%;
@@ -126,6 +130,12 @@
             padding: 10px;
             margin-bottom: 0%;
         }
+
+        .button
+        {
+            width: 75px;
+            height: 25px;
+        }
     </style>
 
     {{!-- Handlebars Scripting --}}
@@ -146,25 +156,109 @@
     {{!-- Search & Prereq Functions Below --}}
 
     <script>
-        function searchForCourse(classcode) // Happens when a course is searched for in the bar. Prompt user for no spaces because we have it set as 'ABCD1234'
-        {
-            document.getElementsByID(classcode).innerHTML; 
-        }
-    </script>
-
-    <script>
-        function getCoursePreReqs(course)
-        {
-            document.getElementsByName(course).entries; // Nick I have no fucking clue what I'm doing
-        }
-    </script>
-
-    <script>
         function createFooterDescription(classcode, name, description, prerecs){
             document.getElementById("footer-class-title").innerHTML = name;
             document.getElementById("footer-class-code").innerHTML = classcode;
             document.getElementById("footer-class-description").innerHTML = description;
         }
+    </script>
+
+    {{! Handles moving cards programatically}}
+    <script>
+        function moveClassCard(classid, targetid){
+            var card = document.getElementById(classid);
+            document.getElementById(targetid).append(card);
+        }
+
+        function setupTemplate(){
+            moveClassCard("CSCI1300", "Year 1_Fall");
+            moveClassCard("CSCI1200", "Year 1_Fall");
+            moveClassCard("MATH1300", "Year 1_Fall");
+            moveClassCard("PHYS1110", "Year 1_Fall");
+        }
+    </script>
+
+    {{! Logic for checking pre-recs
+    So, the reason this is challenging is there are three scenarios:
+    1. 
+    }}
+    <script>
+        function checkPrerecs(classid){
+            var card = document.getElementById(classid);
+            var prerecs = document.getElementById(classid + "_prerecs");
+            var current_table = card.parentElement()
+            console.log(prerecs);
+            if (prerecs != null) {
+                var year = parseInt(current_table.id().charAt(5));
+                var semester = current_table.id().charAt(7);
+                
+                var prerecs_parsed = prerecs.innerHTML.split(",");
+                var satisfied = new Array(prerecs_parsed.length);
+
+                for (i = 1; i <= year; i++){
+                    var check_year_fall = document.getElementById("Year " + i + "_Fall")
+                    for (j = 0; j < check_year_fall.childElementCount; j++) {
+                        var check_card = check_year_fall.children.item(j).children.item(0).children(0).children(0).item;
+                        var check_countsfor = document.getElementById(check_card.id + "_countsfor");
+                        if (check_countsfor != null) {
+                            for (k = 0; k < prerecs_parsed.length(); k++){
+                                if (check_countsfor.innerHTML == prerecs_parsed[k]){
+                                    satisfied[k] = true;
+                                }
+                            }
+                        }
+                    }
+                    if (semester == "S"){
+                        var check_year_fall = document.getElementById("Year " + year + "_Fall")
+                        for (j = 0; j < check_year_fall.childElementCount; j++) {
+                            var check_card = check_year_fall.children.item(j).children.item(0).children(0).children(0).item;
+                            var check_countsfor = document.getElementById(check_card.id + "_countsfor");
+                            if (check_countsfor != null) {
+                                for (k = 0; k < prerecs_parsed.length(); k++){
+                                    if (check_countsfor.innerHTML == prerecs_parsed[k]){
+                                        satisfied[k] = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    var check_year_spring = document.getElementById("Year " + i + "_Spring")
+                    for (j = 0; j < check_year_spring.childElementCount; j++){
+                        var check_card = check_year_spring.children.item(j).children.item(0).children(0).children(0).item;
+                        var check_countsfor = document.getElementById(check_card.id + "_countsfor");
+                        if (check_countsfor != null) {
+                            for (k = 0; k < prerecs_parsed.length(); k++){
+                                if (check_countsfor.innerHTML == prerecs_parsed[k]){
+                                    satisfied[k] = true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (satisfied.every(Boolean)) {
+                    prerecs.innerHTML.color = "green";
+                    console.log("satisfired")
+                } else {
+                    prerecs.innerHTML.color = "red";
+                }
+        }
+    }
+
+    function checkAllCourses(){
+        for (i = 1; i < 5; i++){
+            var falls = document.getElementById("Year " + i + "_Fall");
+            for (j = 0; j < falls.childElementCount; j++){
+                var card = falls.children.item(j);
+                checkPrerecs(card.id);
+            }
+            var springs = document.getElementById("Year " + i + "_Spring");
+            for (j = 0; j < springs.childElementCount; j++){
+                var card = springs.children[j];
+                checkPrerecs(card.id);
+            }
+        }
+    }
     </script>
 
 
@@ -179,24 +273,72 @@
             }).disableSelection();
         });
     </script>
+
+    <script>
+
+        function searchForCourses()
+        {
+            var searched_value = document.getElementById('search_bar').value;
+            var courses = document.getElementById('course_search_results');
+
+           //alert(courses.children.item(1).children.item(0).id);
+           //alert(courses.children.item(1).children.item(0).children.item(0).children.item(0).id);
+
+            for(let i = 0; i < courses.children.length; i++){
+
+                if(searched_value == "" ) // Bad inputs NOT handled yet
+                {
+                    for(let i = 0; i < courses.children.length; i++){
+                        courses.children.item(i).style.visibility = "visible";
+                    }
+                    return;
+                }
+               
+                var course = courses.children.item(i).children.item(0).id;
+                var course_title = courses.children.item(i).children.item(0).children.item(0).children.item(0).id;
+
+                //alert(course_title.innerHTML);
+
+                if(searched_value == course_title || searched_value == course)
+                {
+                    courses.children.item(i).style.visibility = "visible";
+                    courses.children.item(i).style.sen
+
+                }
+
+                else
+                {
+                    //hide 
+                    courses.children.item(i).style.visibility = "hidden";
+                }
+            }
+        }
+
+    </script>
+
 </head>
-<body>
+<body onload="setupTemplate()">
     <!-- Sidebar -->
     <!-- Main Content -->
     <div class="main">
         <div class="sidebar">
-            <input type="text" placeholder="Search..." id="course_search" onsubmit="searchForCourse()">
-            <div id="initial-courses">
-                <ul id="course_search_results" class="connectedSortable">
-                    {{#each all_courses}}
-                        <li>
-                            <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)" onclick="createFooterDescription('{{classcode}}','{{name}}','{{description}}')">
-                                <div class="card-body">
-                                    <h6 class="card-title">{{name}}</h6>
-                                    <p class="card-text">{{classcode}}</p>
-                                    {{#if prerecs}}
-                                        <p id="{{prerecs}}_required">Requires {{prerecs}} Credit(s)</p>
-                                    {{/if}}
+            <div class="col-md">
+                    <div id="initial-courses">
+                       
+                       <input id = "search_bar" placeholder = "Search for a course..." type="text">
+                       <button id = "search_button" class = "button" onclick="searchForCourses()"> Search!</button>
+                       
+                        <ul id="course_search_results" class="connectedSortable">
+                        {{#each all_courses}}
+                            <li id = "{{classcode}}_listentry">
+                                <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)" onclick="createFooterDescription('{{classcode}}','{{name}}','{{description}}')">
+                                      <div id="{{classcode}}_body" class="card-body">
+                                          <h6 id = "{{name}}" class="card-title">{{name}}</h6>
+                                          <p class="card-text">{{classcode}}</p>
+                                          {{#if prerecs}}
+                                              <p id="{{prerecs}}_required">Requires {{prerecs}} Credit(s)</p>
+                                          {{/if}}
+                                      </div>
                                 </div>
                             </div>
                         </li>
