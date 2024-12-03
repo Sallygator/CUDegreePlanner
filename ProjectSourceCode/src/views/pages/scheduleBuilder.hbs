@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,18 +22,6 @@
             height: fit-content;
         }
 
-        .sidebar /* sidebar main */
-        {
-            width: max-content;
-            height: 100%; /* changes the heihht of the sidebar, very broken*/
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
-            background-color: rgba(0, 0, 0, 0.731); 
-            overflow-y: auto;
-            display: auto;
-            border: 5px solid #605b5b00;
-            border-radius: 10px;
-        }
-
         .card
         {
             width: 90%;
@@ -42,34 +29,68 @@
             background-color: #cfc08dba;
         }
 
+        .sidebar /* sidebar main */
+        {
+            width: 30%;
+            height: 100%; /* changes the heihht of the sidebar, very broken*/
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
+            background-color: rgba(0, 0, 0, 0.731); 
+            overflow-y: auto;
+            display: auto;
+            border: 5px solid #605b5b00;
+            border-radius: 5px;
+        }
+
+        /* Flexbox for input and button container */
+        .sidebar .search-container 
+        {
+            display: flex;                /* Align children horizontally */
+            align-items: center;          /* Vertically center the input and button */
+            margin: 2% 7%;                /* Adjust the margin for better spacing */
+        }
+
         .sidebar input[type="text"] /* input text box */
         {
             background-color: rgb(0, 0, 0); 
             border: 1px solid #111111;
             border-radius: 4px;
-            width: 84%;
-            margin-left: 7%;
-            margin-bottom: 1%;
+            width: 85%;                  /* Take up most of the width */
+            color: #929292;
         }
 
-        .main /* holds the years */
+        .button
+        {
+            width: fit-content;                  /* Set the width of the button */
+            height: 100%;                /* Ensure button matches the input's height */
+            color: #ffffffba;
+            background-color: #727eed75;
+            border: 1px solid #111111;
+            border-radius: 4px;
+            margin-left: 10px;           /* Add space between the button and input */
+        }
+
+        .main 
         {
             display: flex;
-            flex: 1;
-            padding: 1%;
-            overflow-x: auto;
+            flex-direction: row; /* horizontal layout */
+            overflow: hidden;
+            height: 100vh; /* Full height */
+            width: 100%;
+            padding: 20px;
             gap: 20px;
         }
 
-        .year /* the years */
+        .year 
         {
-            width: fit-content;
-            height: min-content;
+            height: 100%;
+            width: max-content; /* Fixed width for each year block */
             background-color: rgba(0, 0, 0, 0.731); 
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
             border: 5px solid #605b5b00;
             border-radius: 9px;
             padding: 5px;
+            margin-bottom: 15px;
+            overflow-y: auto; /* Allow vertical scrolling within the year */
         }
 
         .year h3 /* But it's not h3 don't be fooled */
@@ -88,7 +109,7 @@
         {
             display: auto;
             padding: 10px;
-            margin: 5px;
+            margin-bottom: 30px;
             border: 1px solid #111111;
             border-radius: 4px;
             background-color: #111111;
@@ -108,35 +129,53 @@
 
         .semester ul 
         {
-            list-style-type: none; /* Removes the bullet points */
-            padding-left: 0; /* Removes the default padding on the left */
-            margin-top: 10px; /* Adds spacing between the list and the top of the box */
+            list-style-type: none; /* Removes . in the list */
+            padding-left: 0; /* pad to the left */
+            margin-top: 10px;
         }
 
         .semester li 
         {
-            text-align: left;  /* Aligns the text to the left */
-            margin: 0;  /* Ensures there is no extra margin on the list item */
-            padding: 5px 10px; /* Optional: Adds some padding inside the list item */
+            text-align: left;  /* text to the left */
+            margin: 0;  
+            padding: 5px 10px; /* list item padding */
         }
 
         .footer 
         { 
             background-color: #605b5bb3;
-            padding: 10px;
+            padding: 5px;
+            overflow: visible;
             margin-bottom: 0%;
+        }
+
+        ::-webkit-scrollbar 
+        {
+            width: 12px;  /* Width of the scrollbar */
+            height: 12px; /* Height for horizontal scrollbar */
+        }
+
+        ::-webkit-scrollbar-thumb /* draggable thing */
+        {
+            background: #111;  /* Thumb color */
+        }
+
+        ::-webkit-scrollbar-track /* where the thing slides in */
+        {
+            background: #1a1a1a7a;    /* Track color */
+            border-radius: 6px;
         }
     </style>
 
-    {{!-- Handlebars Scripting --}}
-
+    <!-- Handlebars Scripting -->
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
 
-    {{!-- Custom Scripting --}}
-    {{!
-    <script src="CUDegreePlanner\ProjectSourceCode\src\resources\js\script.js"></script>}}
-    
-    {{! Displays class info when a class card is clicked}}
+    <!-- Custom Scripting -->
+    {{!-- 
+    <script src="CUDegreePlanner\ProjectSourceCode\src\resources\js\script.js"></script>
+    --}}
+
+    {{!-- Displays class info when a class card is clicked --}}
     <script>
         function displayclassInfo(id){
             document.getElementById().innerHTML;
@@ -144,21 +183,6 @@
     </script>
 
     {{!-- Search & Prereq Functions Below --}}
-
-    <script>
-        function searchForCourse(classcode) // Happens when a course is searched for in the bar. Prompt user for no spaces because we have it set as 'ABCD1234'
-        {
-            document.getElementsByID(classcode).innerHTML; 
-        }
-    </script>
-
-    <script>
-        function getCoursePreReqs(course)
-        {
-            document.getElementsByName(course).entries; // Nick I have no fucking clue what I'm doing
-        }
-    </script>
-
     <script>
         function createFooterDescription(classcode, name, description, prerecs){
             document.getElementById("footer-class-title").innerHTML = name;
@@ -167,8 +191,7 @@
         }
     </script>
 
-
-    {{!-- Jquery Scripting --}}
+    <!-- Jquery Scripting -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
@@ -179,61 +202,102 @@
             }).disableSelection();
         });
     </script>
+
+    <script>
+        function searchForCourses()
+        {
+            var searched_value = document.getElementById('search_bar').value;
+            var courses = document.getElementById('course_search_results');
+
+            //alert(courses.children.item(1).children.item(0).id);
+            //alert(courses.children.item(1).children.item(0).children.item(0).children.item(0).id);
+
+            for(let i = 0; i < courses.children.length; i++){
+
+                if(searched_value == "" ) // Bad inputs NOT handled yet
+                {
+                    for(let i = 0; i < courses.children.length; i++){
+                        courses.children.item(i).style.visibility = "visible";
+                    }
+                    return;
+                }
+               
+                var course = courses.children.item(i).children.item(0).id;
+                var course_title = courses.children.item(i).children.item(0).children.item(0).children.item(0).id;
+
+                //alert(course_title.innerHTML);
+
+                if(searched_value == course_title || searched_value == course)
+                {
+                    courses.children.item(i).style.visibility = "visible";
+                    courses.children.item(i).style.sen
+
+                }
+
+                else
+                {
+                    //hide 
+                    courses.children.item(i).style.visibility = "hidden";
+                }
+            }
+        }
+    </script>
+
 </head>
 <body>
     <!-- Sidebar -->
-    <!-- Main Content -->
     <div class="main">
         <div class="sidebar">
-            <input type="text" placeholder="Search..." id="course_search" onsubmit="searchForCourse()">
-            <div id="initial-courses">
-                <ul id="course_search_results" class="connectedSortable">
-                    {{#each all_courses}}
-                        <li>
-                            <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)" onclick="createFooterDescription('{{classcode}}','{{name}}','{{description}}')">
-                                <div class="card-body">
-                                    <h6 class="card-title">{{name}}</h6>
-                                    <p class="card-text">{{classcode}}</p>
-                                    {{#if prerecs}}
-                                        <p id="{{prerecs}}_required">Requires {{prerecs}} Credit(s)</p>
-                                    {{/if}}
+            <div class="col-md">
+                <div id="initial-courses">
+                    <div class="search-container">
+                        <!-- Input box for searching courses -->
+                        <input id="search_bar" placeholder="Search for a course..." type="text">
+                        <!-- Search button next to the input -->
+                        <button id="search_button" class="button" onclick="searchForCourses()"> Search </button>
+                    </div>
+                    <ul id="course_search_results" class="connectedSortable">
+                        {{#each all_courses}}
+                            <li id="{{classcode}}_listentry">
+                                <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)" onclick="createFooterDescription('{{classcode}}','{{name}}','{{description}}')">
+                                    <div id="{{classcode}}_body" class="card-body">
+                                        <h6 id="{{name}}" class="card-title">{{name}}</h6>
+                                        <p class="card-text">{{classcode}}</p>
+                                        {{#if prerecs}}
+                                            <p id="{{prerecs}}_required">Requires {{prerecs}} Credit(s)</p>
+                                        {{/if}}
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                    {{/each}}
-                </ul>
-            </div>  
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>  
+            </div>
         </div>
-            {{#each years}}
+        {{#each years}}
             <div class="year">
                 <h3>{{this.name}}</h3>
                 <div class="semester">
                     <h6>Fall</h6>
-                    <ul id="{{this.name}}_Fall" class="connectedSortable"  >
-                        <li>
-                           Drag and drop items here!
-                        </li>
+                    <ul id="{{this.name}}_Fall" class="connectedSortable">
+                        <li>Drag and drop items here!</li>
                     </ul>
                 </div>
                 <div class="semester">
                     <h6>Spring</h6>
                     <ul id="{{this.name}}_Spring" class="connectedSortable">
-                        <li>
-                            Drag and drop items here!
-                        </li>
+                        <li>Drag and drop items here!</li>
                     </ul>
                 </div>
             </div>
-            {{/each}}
-        </div>
+        {{/each}}
     </div>
 
     <!-- Footer -->
-    <div class="footer" id="footer-box">
+    <div class="footer">
         <h4 id="footer-class-title">No class selected.</h4>
-        <p id="footer-class-code"></p>
-        <p id="footer-class-description"></p>
+        <p id="footer-class-code"></p>  
+        <p id="footer-class-description"></p> 
     </div>
 </body>
-
 </html>
