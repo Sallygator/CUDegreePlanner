@@ -49,7 +49,7 @@ describe('Testing Register API', () => {
     chai
       .request(server)
       .post('/register')
-      .send({ username: 'testuser', password: 'securepassword123' })
+      .send({ username: 'testuser', password: 'securepassword123', degree: 'Computer Science' })
       .end((err, res) => {
         expect(res).to.have.status(200); 
         done();
@@ -65,7 +65,7 @@ describe('Testing Register API', () => {
       .send({ username: '', password: 'short' }) // Invalid input
       .end((err, res) => {
         expect(res).to.have.status(400);
-        expect(res.body.message).to.equal('Invalid input');
+        expect(res.body.message).to.equal('Missing required fields.');
         done();
       });
   });
