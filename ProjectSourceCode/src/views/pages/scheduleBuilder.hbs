@@ -204,18 +204,15 @@
             document.getElementById(targetid).append(card.parentElement);
         }
 
-        function setupTemplate(){
-            moveClassCard("CSCI1300", "Year 1_Fall");
-            moveClassCard("CSCI1200", "Year 1_Fall");
-            moveClassCard("MATH1300", "Year 1_Fall");
-            moveClassCard("PHYS1110", "Year 1_Fall");
-        }
+        //function setupTemplate(){
+            //moveClassCard("CSCI1300", "Year 1_Fall");
+            //moveClassCard("CSCI1200", "Year 1_Fall");
+            //moveClassCard("MATH1300", "Year 1_Fall");
+            //moveClassCard("PHYS1110", "Year 1_Fall");
+        //} 
     </script>
 
-    {{! Logic for checking pre-recs
-    So, the reason this is challenging is there are three scenarios:
-    1. 
-    }}
+    {{! Logic for checking pre-recs}}
     <script>
         function checkPrerecs(classid, yearsem){
             var card = document.getElementById(classid);
@@ -345,7 +342,6 @@
                 if(searched_value == course_title || searched_value == course)
                 {
                     courses.children.item(i).style.display = "block";
-
                 }
 
                 else
