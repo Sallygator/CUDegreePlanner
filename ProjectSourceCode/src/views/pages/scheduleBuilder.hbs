@@ -139,6 +139,12 @@
             width: 75px;
             height: 25px;
         }
+        
+        .button
+        {
+            width: 75px;
+            height: 25px;
+        }
 
         .semester li 
         {
@@ -171,6 +177,7 @@
             background: #1a1a1a7a;    /* Track color */
             border-radius: 6px;
         }
+        
     </style>
 
     <!-- Handlebars Scripting -->
@@ -255,7 +262,7 @@
                                     }
                                 }
                             }
-                    }
+                        }
                     }
                     
                     var check_year_spring = document.getElementById("Year " + i + "_Spring")
@@ -345,7 +352,6 @@
                 if(searched_value == course_title || searched_value == course)
                 {
                     courses.children.item(i).style.display = "block";
-
                 }
 
                 else
