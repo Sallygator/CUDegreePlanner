@@ -51,7 +51,10 @@
 
         .sidebar input[type="text"] /* input text box */
         {
-            background-color: rgb(0, 0, 0); 
+            width: 90%;
+            margin: 10px;
+            padding: 5px;
+            background-color: hwb(34 42% 33%); 
             border: 1px solid #111111;
             border-radius: 4px;
             width: 85%;                  /* Take up most of the width */
@@ -133,6 +136,11 @@
             padding-left: 0; /* pad to the left */
             margin-top: 10px;
         }
+        .button
+        {
+            width: 75px;
+            height: 25px;
+        }
 
         .semester li 
         {
@@ -191,7 +199,8 @@
         }
     </script>
 
-    <!-- Jquery Scripting -->
+
+    {{!-- Jquery Scripting --}}
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
@@ -216,9 +225,11 @@
 
                 if(searched_value == "" ) // Bad inputs NOT handled yet
                 {
-                    for(let i = 0; i < courses.children.length; i++){
-                        courses.children.item(i).style.visibility = "visible";
+                    for(let i = 0; i < courses.children.length; i++)
+                    {
+                        courses.children.item(i).style.display = "block";
                     }
+                    
                     return;
                 }
                
@@ -229,18 +240,15 @@
 
                 if(searched_value == course_title || searched_value == course)
                 {
-                    courses.children.item(i).style.visibility = "visible";
-                    courses.children.item(i).style.sen
+                    courses.children.item(i).style.display = "block";
 
                 }
 
                 else
                 {
                     //hide 
-                    courses.children.item(i).style.visibility = "hidden";
+                    courses.children.item(i).style.display = "none";
                 }
-            }
-        }
     </script>
 
 </head>
