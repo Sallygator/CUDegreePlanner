@@ -155,7 +155,7 @@
     <script>
         function moveClassCard(classid, targetid){
             var card = document.getElementById(classid);
-            document.getElementById(targetid).append(card);
+            document.getElementById(targetid).append(card.parentElement);
         }
 
         function setupTemplate(){
@@ -171,26 +171,26 @@
     1. 
     }}
     <script>
-        function checkPrerecs(classid){
+        function checkPrerecs(classid, yearsem){
             var card = document.getElementById(classid);
-            var prerecs = document.getElementById(classid + "_prerecs");
-            var current_table = card.parentElement()
-            console.log(prerecs);
+            var prerecs = document.getElementById(classid + "_required");
+            var current_table = yearsem;
             if (prerecs != null) {
-                var year = parseInt(current_table.id().charAt(5));
-                var semester = current_table.id().charAt(7);
+                var year = parseInt(current_table.id.charAt(5));
+                var semester = current_table.id.charAt(7);
                 
-                var prerecs_parsed = prerecs.innerHTML.split(",");
-                var satisfied = new Array(prerecs_parsed.length);
+                var prerecs_parsed = prerecs.innerHTML.slice(9).split(",");
+                var satisfied = new Array(prerecs_parsed.length).fill(false);
 
-                for (i = 1; i <= year; i++){
+                for (let i = 1; i < year; i++){
                     var check_year_fall = document.getElementById("Year " + i + "_Fall")
-                    for (j = 0; j < check_year_fall.childElementCount; j++) {
-                        var check_card = check_year_fall.children.item(j).children.item(0).children(0).children(0).item;
+                    for (let j = 1; j < check_year_fall.childElementCount; j++) {
+                        var check_card = check_year_fall.children.item(j).children.item(0);
                         var check_countsfor = document.getElementById(check_card.id + "_countsfor");
                         if (check_countsfor != null) {
-                            for (k = 0; k < prerecs_parsed.length(); k++){
-                                if (check_countsfor.innerHTML == prerecs_parsed[k]){
+                            var check_countsfor_parsed = check_countsfor.innerHTML.slice(11);
+                            for (let k = 0; k < prerecs_parsed.length; k++){
+                                if (check_countsfor_parsed == prerecs_parsed[k]){
                                     satisfied[k] = true;
                                 }
                             }
@@ -198,53 +198,43 @@
                     }
                     if (semester == "S"){
                         var check_year_fall = document.getElementById("Year " + year + "_Fall")
-                        for (j = 0; j < check_year_fall.childElementCount; j++) {
-                            var check_card = check_year_fall.children.item(j).children.item(0).children(0).children(0).item;
+                        for (let j = 1; j < check_year_fall.childElementCount; j++) {
+                            var check_card = check_year_fall.children.item(j).children.item(0);
                             var check_countsfor = document.getElementById(check_card.id + "_countsfor");
                             if (check_countsfor != null) {
-                                for (k = 0; k < prerecs_parsed.length(); k++){
-                                    if (check_countsfor.innerHTML == prerecs_parsed[k]){
+                                var check_countsfor_parsed = check_countsfor.innerHTML.slice(11);
+                                for (let k = 0; k < prerecs_parsed.length; k++){
+                                    if (check_countsfor_parsed == prerecs_parsed[k]){
                                         satisfied[k] = true;
                                     }
                                 }
                             }
-                        }
                     }
+                    }
+                    
                     var check_year_spring = document.getElementById("Year " + i + "_Spring")
-                    for (j = 0; j < check_year_spring.childElementCount; j++){
-                        var check_card = check_year_spring.children.item(j).children.item(0).children(0).children(0).item;
+                    for (let j = 1; j < check_year_spring.childElementCount; j++) {
+                        var check_card = check_year_spring.children.item(j).children.item(0);
                         var check_countsfor = document.getElementById(check_card.id + "_countsfor");
                         if (check_countsfor != null) {
-                            for (k = 0; k < prerecs_parsed.length(); k++){
-                                if (check_countsfor.innerHTML == prerecs_parsed[k]){
+                            var check_countsfor_parsed = check_countsfor.innerHTML.slice(11);
+                            for (let k = 0; k < prerecs_parsed.length; k++){
+                                if (check_countsfor_parsed == prerecs_parsed[k]){
                                     satisfied[k] = true;
                                 }
                             }
                         }
-                    }
+                }   
                 }
-
                 if (satisfied.every(Boolean)) {
                     prerecs.innerHTML.color = "green";
-                    console.log("satisfired")
+                    alert("passin");
+                    
                 } else {
                     prerecs.innerHTML.color = "red";
+                    alert("failin")
                 }
-        }
-    }
-
-    function checkAllCourses(){
-        for (i = 1; i < 5; i++){
-            var falls = document.getElementById("Year " + i + "_Fall");
-            for (j = 0; j < falls.childElementCount; j++){
-                var card = falls.children.item(j);
-                checkPrerecs(card.id);
-            }
-            var springs = document.getElementById("Year " + i + "_Spring");
-            for (j = 0; j < springs.childElementCount; j++){
-                var card = springs.children[j];
-                checkPrerecs(card.id);
-            }
+                
         }
     }
     </script>
@@ -258,7 +248,25 @@
         $(function () {
             $(".connectedSortable").sortable({
                 connectWith: ".connectedSortable"
+                
             }).disableSelection();
+
+            $(".connectedSortable").sortable({
+                stop: function() {
+                    for (let m = 1; m < 5; m++){
+                        var falls = document.getElementById("Year " + m + "_Fall");
+                        for (let j = 1; j < falls.childElementCount; j++){
+                            var card = falls.children.item(j).children.item(0).id;
+                            checkPrerecs(card, falls);
+                        }
+                        var springs = document.getElementById("Year " + m + "_Spring");
+                        for (let j = 1; j < springs.childElementCount; j++){
+                            var card = springs.children.item(j).children.item(0).id;
+                            checkPrerecs(card, springs);
+                        }
+                    }
+                }
+            });
         });
     </script>
 </head>
@@ -272,8 +280,8 @@
                 <div id="initial-courses">
                     <ul id="course_search_results" class="connectedSortable">
                         {{#each all_courses}}
-                            <li>
-                                <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)" onclick="createFooterDescription('{{classcode}}','{{name}}','{{description}}')" ondrop="checkAllCourses()">
+                            <li id="{{classcode}}_list">
+                                <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)" onclick="createFooterDescription('{{classcode}}','{{name}}','{{description}}')">
                                     <div class="card-body">
                                         <h6 class="card-title">{{name}}</h6>
                                         <p class="card-text">{{classcode}}</p>
@@ -281,7 +289,7 @@
                                             <p id="{{classcode}}_required">Requires {{prerecs}}</p>
                                         {{/if}}
                                         {{#if countsfor}}
-                                            <p id="{{classcode}}_countsfor"> Counts for {{countsfor}}</p>
+                                            <p id="{{classcode}}_countsfor">Counts for {{countsfor}}</p>
                                         {{/if}}
                                     </div>
                                 </div>
@@ -297,13 +305,13 @@
                 <div class="semester">
                     <p>Fall</p>
                     <ul id="{{this.name}}_Fall" class="connectedSortable">
-                        <li></li>
+                        <li id="fall-empty"></li>
                     </ul>
                 </div>
                 <div class="semester">
                     <p>Spring</p>
                     <ul id="{{this.name}}_Spring" class="connectedSortable">
-                        <li></li>
+                        <li id="spring-empty"></li>
                     </ul>
                 </div>
             </div>

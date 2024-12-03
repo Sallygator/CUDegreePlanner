@@ -109,7 +109,6 @@ app.get('/scheduleBuilder', async (req, res) =>
     return res.redirect('/login');
   }
   var all_courses = await db.query('SELECT * FROM courseregistry;');
-  console.log(all_courses);
   res.render('pages/scheduleBuilder', 
     {
       years: [
