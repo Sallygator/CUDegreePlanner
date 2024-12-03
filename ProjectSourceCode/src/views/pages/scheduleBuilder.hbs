@@ -171,7 +171,7 @@
                 if(searched_value == "" ) // Bad inputs NOT handled yet
                 {
                     for(let i = 0; i < courses.children.length; i++){
-                        courses.children.item(i).style.visibility = "visible";
+                        courses.children.item(i).style.display = "block";
                     }
                     return;
                 }
@@ -183,7 +183,7 @@
 
                 if(searched_value == course_title || searched_value == course)
                 {
-                    courses.children.item(i).style.visibility = "visible";
+                    courses.children.item(i).style.display = "block";
                     courses.children.item(i).style.sen
 
                 }
@@ -191,7 +191,7 @@
                 else
                 {
                     //hide 
-                    courses.children.item(i).style.visibility = "hidden";
+                    courses.children.item(i).style.display = "none";
                 }
             }
         }
