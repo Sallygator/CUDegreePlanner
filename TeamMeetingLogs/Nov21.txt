@@ -8,4 +8,41 @@ Points to include in the minutes would be:
 - Alternative actions/options discussed
 - Follow-up items, including agreed-on roles and responsibilities
 ---------------------------------------------------------------------------------------
-    
+
+Nick: 
+- impliment a script to find all pre-requirements of a class when dropped into schedule, send an error message if not met
+    - deal with class requirements as a whole
+- impliment code w/ Hannah
+
+Hannah:
+- wrap up front end UI with new backend features and user test it
+    - impliment search bar w/ button w/ Truman 
+    - impliment pre-requirements w/ Nick
+
+Truman:
+- impliment a search function to find the desired class(s)
+    - search for a class such as "CSCI1300" and it is the only class in the searchbar 
+    - maybe add a feature to search credit type??
+- impliment code w/ Hannah
+
+Daralynn:
+- ensuring all project requiremnts are met and all notes are completed
+- managing labs for the team
+    - unit testing and set up render
+
+Marcus:
+- create the google slide presenation
+    - record video in case something breaks 
+    - scheudle rehersal meeting
+
+Announcements:
+- Anytime you are doing work, make sure there is an issue on the project board related to it. Keep that up-to-date
+- Keep github up to date with any new information. Both code and documentation related. This will make the final github cleanup easier.
+- Merged together, wrapping up some final bugs/issues. MVP by Monday night ideally
+- All of us are meeting on 12/3 to go over the presenation over zoom, come prepared!
+
+Whats Next (optionals mostly):
+- addition to the search function - search for classes by what requirements they fill
+- fix bugs in pre-requirement code checking and finalize error message
+- PRACTICE THE PRESENATION FOR WEDNESDAY MORNING (12/4)!!!
+    - eat and get good sleep
