@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,65 +11,87 @@
             display: flex;
             flex-direction: column;
             height: 100%;
-            background: linear-gradient(135deg, hwb(34 42% 33%), #648cc4); /* Gradient background */
+            width: 100%;
+            background: linear-gradient(135deg, rgb(171, 143, 107), #648cc4); /* Gradient background */
         }
 
         .container /* holds all content */
         {
             display: auto;
-            
             overflow: hidden;
-            width: 100%;
-        }
-
-        .sidebar /* sidebar main */
-        {
-            width: 25%;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
-            overflow-y: auto;
-            background-color: rgba(0, 0, 0, 0.731); 
-            display: auto;
-            margin-top: 3%;
-            margin-bottom: 3%;
-            margin-left: 0%;
-            border: 5px solid #605b5b00;
-            border-radius: 10px;
+            height: fit-content;
         }
 
         .card
         {
-            width: 80%;
-            height: 3
+            width: 90%;
+            height: fit-content;
+            background-color: #cfc08dba;
+        }
+
+        .sidebar /* sidebar main */
+        {
+            width: 30%;
+            height: 100%; /* changes the heihht of the sidebar, very broken*/
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
+            background-color: rgba(0, 0, 0, 0.731); 
+            overflow-y: auto;
+            display: auto;
+            border: 5px solid #605b5b00;
+            border-radius: 5px;
+        }
+
+        /* Flexbox for input and button container */
+        .sidebar .search-container 
+        {
+            display: flex;                /* Align children horizontally */
+            align-items: center;          /* Vertically center the input and button */
+            margin: 2% 7%;                /* Adjust the margin for better spacing */
         }
 
         .sidebar input[type="text"] /* input text box */
         {
-            width: 90%;
-            margin: 10px;
-            padding: 5px;
-            background-color: hwb(34 42% 33%); 
+            background-color: rgb(0,0,0); 
             border: 1px solid #111111;
             border-radius: 4px;
+            width: 85%;                  /* Take up most of the width */
+            color: #929292;
         }
 
-        .main /* holds the years */
+        .button
+        {
+            width: fit-content;                  /* Set the width of the button */
+            height: 100%;                /* Ensure button matches the input's height */
+            color: #ffffffba;
+            background-color: #727eed75;
+            border: 1px solid #111111;
+            border-radius: 4px;
+            margin-left: 10px;           /* Add space between the button and input */
+        }
+
+        .main 
         {
             display: flex;
-            flex: 1;
-            padding: 3%;
-            overflow-x: auto;
+            flex-direction: row; /* horizontal layout */
+            overflow: hidden;
+            height: 100vh; /* Full height */
+            width: 100%;
+            padding: 20px;
             gap: 20px;
         }
 
-        .year /* the years */
+        .year 
         {
-            width: fit-content;
-            height: fit-content;
+            height: 100%;
+            width: max-content; /* Fixed width for each year block */
+            min-width: 18%;
             background-color: rgba(0, 0, 0, 0.731); 
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
             border: 5px solid #605b5b00;
             border-radius: 9px;
-            padding: 10px;
+            padding: 5px;
+            margin-bottom: 15px;
+            overflow-y: auto; /* Allow vertical scrolling within the year */
         }
 
         .year h3 /* But it's not h3 don't be fooled */
@@ -89,45 +110,85 @@
         {
             display: auto;
             padding: 10px;
-            margin: 5px;
+            margin-bottom: 30px;
             border: 1px solid #111111;
             border-radius: 4px;
             background-color: #111111;
-            min-height: 100px; /* Ensures visible empty boxes */
+            min-height: 40%; /* Ensures visible empty boxes */
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
+            color: #648cc47f;
         }
 
         .semester p
         {
             display: auto;
             margin-top: 0px;
-            text-align: center;
-            color: #c5c5c5;
+            text-align: left;
+            color: #000000;
+            font-weight: bolder;
         }
 
-        .footer 
+        .semester ul 
         {
-            height: 15%;
-            background-color: #605b5bb3;
-            padding: 10px;
+            list-style-type: none; /* Removes . in the list */
+            padding-left: 0; /* pad to the left */
+            margin-top: 10px;
         }
-
         .button
         {
             width: 75px;
             height: 25px;
         }
+        
+        .button
+        {
+            width: 75px;
+            height: 25px;
+        }
+
+        .semester li 
+        {
+            text-align: left;  /* text to the left */
+            margin: 0;  
+            padding: 5px 10px; /* list item padding */
+        }
+
+        .footer 
+        { 
+            background-color: #605b5bb3;
+            padding: 5px;
+            overflow: visible;
+            margin-bottom: 0%;
+        }
+
+        ::-webkit-scrollbar 
+        {
+            width: 12px;  /* Width of the scrollbar */
+            height: 12px; /* Height for horizontal scrollbar */
+        }
+
+        ::-webkit-scrollbar-thumb /* draggable thing */
+        {
+            background: #111;  /* Thumb color */
+        }
+
+        ::-webkit-scrollbar-track /* where the thing slides in */
+        {
+            background: #1a1a1a7a;    /* Track color */
+            border-radius: 6px;
+        }
+        
     </style>
 
-    {{!-- Handlebars Scripting --}}
-
+    <!-- Handlebars Scripting -->
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
 
-    {{!-- Custom Scripting --}}
-    {{!
-    <script src="CUDegreePlanner\ProjectSourceCode\src\resources\js\script.js"></script>}}
-    
-    {{! Displays class info when a class card is clicked}}
+    <!-- Custom Scripting -->
+    {{!-- 
+    <script src="CUDegreePlanner\ProjectSourceCode\src\resources\js\script.js"></script>
+    --}}
+
+    {{!-- Displays class info when a class card is clicked --}}
     <script>
         function displayclassInfo(id){
             document.getElementById().innerHTML;
@@ -135,7 +196,6 @@
     </script>
 
     {{!-- Search & Prereq Functions Below --}}
-
     <script>
         function createFooterDescription(classcode, name, description, prerecs){
             document.getElementById("footer-class-title").innerHTML = name;
@@ -148,7 +208,7 @@
     <script>
         function moveClassCard(classid, targetid){
             var card = document.getElementById(classid);
-            document.getElementById(targetid).append(card);
+            document.getElementById(targetid).append(card.parentElement);
         }
 
         function setupTemplate(){
@@ -164,26 +224,26 @@
     1. 
     }}
     <script>
-        function checkPrerecs(classid){
+        function checkPrerecs(classid, yearsem){
             var card = document.getElementById(classid);
-            var prerecs = document.getElementById(classid + "_prerecs");
-            var current_table = card.parentElement()
-            console.log(prerecs);
+            var prerecs = document.getElementById(classid + "_required");
+            var current_table = yearsem;
             if (prerecs != null) {
-                var year = parseInt(current_table.id().charAt(5));
-                var semester = current_table.id().charAt(7);
+                var year = parseInt(current_table.id.charAt(5));
+                var semester = current_table.id.charAt(7);
                 
-                var prerecs_parsed = prerecs.innerHTML.split(",");
-                var satisfied = new Array(prerecs_parsed.length);
+                var prerecs_parsed = prerecs.innerHTML.slice(9).split(",");
+                var satisfied = new Array(prerecs_parsed.length).fill(false);
 
-                for (i = 1; i <= year; i++){
+                for (let i = 1; i < year; i++){
                     var check_year_fall = document.getElementById("Year " + i + "_Fall")
-                    for (j = 0; j < check_year_fall.childElementCount; j++) {
-                        var check_card = check_year_fall.children.item(j).children.item(0).children(0).children(0).item;
+                    for (let j = 1; j < check_year_fall.childElementCount; j++) {
+                        var check_card = check_year_fall.children.item(j).children.item(0);
                         var check_countsfor = document.getElementById(check_card.id + "_countsfor");
                         if (check_countsfor != null) {
-                            for (k = 0; k < prerecs_parsed.length(); k++){
-                                if (check_countsfor.innerHTML == prerecs_parsed[k]){
+                            var check_countsfor_parsed = check_countsfor.innerHTML.slice(11);
+                            for (let k = 0; k < prerecs_parsed.length; k++){
+                                if (check_countsfor_parsed == prerecs_parsed[k]){
                                     satisfied[k] = true;
                                 }
                             }
@@ -191,53 +251,43 @@
                     }
                     if (semester == "S"){
                         var check_year_fall = document.getElementById("Year " + year + "_Fall")
-                        for (j = 0; j < check_year_fall.childElementCount; j++) {
-                            var check_card = check_year_fall.children.item(j).children.item(0).children(0).children(0).item;
+                        for (let j = 1; j < check_year_fall.childElementCount; j++) {
+                            var check_card = check_year_fall.children.item(j).children.item(0);
                             var check_countsfor = document.getElementById(check_card.id + "_countsfor");
                             if (check_countsfor != null) {
-                                for (k = 0; k < prerecs_parsed.length(); k++){
-                                    if (check_countsfor.innerHTML == prerecs_parsed[k]){
+                                var check_countsfor_parsed = check_countsfor.innerHTML.slice(11);
+                                for (let k = 0; k < prerecs_parsed.length; k++){
+                                    if (check_countsfor_parsed == prerecs_parsed[k]){
                                         satisfied[k] = true;
                                     }
                                 }
                             }
                         }
                     }
+                    
                     var check_year_spring = document.getElementById("Year " + i + "_Spring")
-                    for (j = 0; j < check_year_spring.childElementCount; j++){
-                        var check_card = check_year_spring.children.item(j).children.item(0).children(0).children(0).item;
+                    for (let j = 1; j < check_year_spring.childElementCount; j++) {
+                        var check_card = check_year_spring.children.item(j).children.item(0);
                         var check_countsfor = document.getElementById(check_card.id + "_countsfor");
                         if (check_countsfor != null) {
-                            for (k = 0; k < prerecs_parsed.length(); k++){
-                                if (check_countsfor.innerHTML == prerecs_parsed[k]){
+                            var check_countsfor_parsed = check_countsfor.innerHTML.slice(11);
+                            for (let k = 0; k < prerecs_parsed.length; k++){
+                                if (check_countsfor_parsed == prerecs_parsed[k]){
                                     satisfied[k] = true;
                                 }
                             }
                         }
-                    }
+                }   
                 }
-
                 if (satisfied.every(Boolean)) {
                     prerecs.innerHTML.color = "green";
-                    console.log("satisfired")
+                    alert("passin");
+                    
                 } else {
                     prerecs.innerHTML.color = "red";
+                    alert("failin")
                 }
-        }
-    }
-
-    function checkAllCourses(){
-        for (i = 1; i < 5; i++){
-            var falls = document.getElementById("Year " + i + "_Fall");
-            for (j = 0; j < falls.childElementCount; j++){
-                var card = falls.children.item(j);
-                checkPrerecs(card.id);
-            }
-            var springs = document.getElementById("Year " + i + "_Spring");
-            for (j = 0; j < springs.childElementCount; j++){
-                var card = springs.children[j];
-                checkPrerecs(card.id);
-            }
+                
         }
     }
     </script>
@@ -251,27 +301,46 @@
         $(function () {
             $(".connectedSortable").sortable({
                 connectWith: ".connectedSortable"
+                
             }).disableSelection();
+
+            $(".connectedSortable").sortable({
+                stop: function() {
+                    for (let m = 1; m < 5; m++){
+                        var falls = document.getElementById("Year " + m + "_Fall");
+                        for (let j = 1; j < falls.childElementCount; j++){
+                            var card = falls.children.item(j).children.item(0).id;
+                            checkPrerecs(card, falls);
+                        }
+                        var springs = document.getElementById("Year " + m + "_Spring");
+                        for (let j = 1; j < springs.childElementCount; j++){
+                            var card = springs.children.item(j).children.item(0).id;
+                            checkPrerecs(card, springs);
+                        }
+                    }
+                }
+            });
         });
     </script>
 
     <script>
-
         function searchForCourses()
         {
             var searched_value = document.getElementById('search_bar').value;
             var courses = document.getElementById('course_search_results');
 
-           //alert(courses.children.item(1).children.item(0).id);
-           //alert(courses.children.item(1).children.item(0).children.item(0).children.item(0).id);
+            //alert(courses.children.item(1).children.item(0).id);
+            //alert(courses.children.item(1).children.item(0).children.item(0).children.item(0).id);
 
             for(let i = 0; i < courses.children.length; i++){
 
                 if(searched_value == "" ) // Bad inputs NOT handled yet
                 {
-                    for(let i = 0; i < courses.children.length; i++){
-                        courses.children.item(i).style.visibility = "visible";
+                    for(let i = 0; i < courses.children.length; i++)
+                    {
+                        courses.children.item(i).style.display = "block";
                     }
+                    
                     return;
                 }
                
@@ -282,44 +351,45 @@
 
                 if(searched_value == course_title || searched_value == course)
                 {
-                    courses.children.item(i).style.visibility = "visible";
-                    courses.children.item(i).style.sen
-
+                    courses.children.item(i).style.display = "block";
                 }
 
                 else
                 {
                     //hide 
-                    courses.children.item(i).style.visibility = "hidden";
+                    courses.children.item(i).style.display = "none";
                 }
             }
         }
-
     </script>
 
 </head>
 <body onload="setupTemplate()">
     <!-- Sidebar -->
-        <!-- Main Content -->
     <div class="main">
         <div class="sidebar">
             <div class="col-md">
-                    <div id="initial-courses">
-                       
-                       <input id = "search_bar" placeholder = "Search for a course..." type="text">
-                       <button id = "search_button" class = "button" onclick="searchForCourses()"> Search!</button>
-                       
-                        <ul id="course_search_results" class="connectedSortable">
+                <div id="initial-courses">
+                    <div class="search-container">
+                        <!-- Input box for searching courses -->
+                        <input id="search_bar" placeholder="Search for a course..." type="text">
+                        <!-- Search button next to the input -->
+                        <button id="search_button" class="button" onclick="searchForCourses()"> Search </button>
+                    </div>
+                    <ul id="course_search_results" class="connectedSortable">
                         {{#each all_courses}}
-                            <li id = "{{classcode}}_listentry">
+                            <li id="{{classcode}}_list">
                                 <div id="{{classcode}}" class="card" draggable="true" ondragstart="drag(event)" onclick="createFooterDescription('{{classcode}}','{{name}}','{{description}}')">
-                                        <div id="{{classcode}}_body" class="card-body">
-                                            <h6 id = "{{name}}" class="card-title">{{name}}</h6>
-                                            <p class="card-text">{{classcode}}</p>
-                                            {{#if prerecs}}
-                                                <p id="{{prerecs}}_required">Requires {{prerecs}} Credit(s)</p>
-                                            {{/if}}
-                                        </div>
+                                    <div class="card-body">
+                                        <h6 class="card-title">{{name}}</h6>
+                                        <p class="card-text">{{classcode}}</p>
+                                        {{#if prerecs}}
+                                            <p id="{{classcode}}_required">Requires {{prerecs}}</p>
+                                        {{/if}}
+                                        {{#if countsfor}}
+                                            <p id="{{classcode}}_countsfor">Counts for {{countsfor}}</p>
+                                        {{/if}}
+                                    </div>
                                 </div>
                             </li>
                         {{/each}}
@@ -327,13 +397,13 @@
                 </div>  
             </div>
         </div>
-            {{#each years}}
+        {{#each years}}
             <div class="year">
                 <h3>{{this.name}}</h3>
                 <div class="semester">
                     <h6>Fall</h6>
                     <ul id="{{this.name}}_Fall" class="connectedSortable"  >
-                        <li>
+                        <li id="fall-empty">
                            Drag and drop items here!
                         </li>
                     </ul>
@@ -341,24 +411,18 @@
                 <div class="semester">
                     <h6>Spring</h6>
                     <ul id="{{this.name}}_Spring" class="connectedSortable">
-                        <li>
-                            Drag and drop items here!
-                        </li>
+                        <li>Drag and drop items here!</li>
                     </ul>
                 </div>
             </div>
-            {{/each}}
-        </div>
+        {{/each}}
     </div>
 
     <!-- Footer -->
-    <div class="footer" id="footer-box">
-        <div class="card">
-            <h4 id="footer-class-title">No class selected.</h4>
-            <p id="footer-class-code"></p>
-            <p id="footer-class-description"></p>
-        </div>
+    <div class="footer">
+        <h4 id="footer-class-title">No class selected.</h4>
+        <p id="footer-class-code"></p>  
+        <p id="footer-class-description"></p> 
     </div>
 </body>
-
 </html>
