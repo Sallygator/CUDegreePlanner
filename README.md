@@ -33,9 +33,9 @@ _An interface to assist CU Boulder Computer Science Undergraduate Students with 
 ## 🛠 Technology Stack
 
 - **Frontend:** [HTML, Handlebars]
-- **Backend:** [NodeJs]
+- **Backend:** [NodeJs, Mocha, Chai]
 - **Database:** [PostgreSQL]
-- **Other Tools and Libraries:** [Visual Studio Code, Git, Github, Mocha, Chai]
+- **Other Tools and Libraries:** [Visual Studio Code, Git, Github]
 
 ## ⚙ Prerequisites
 
