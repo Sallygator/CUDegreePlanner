@@ -12,6 +12,9 @@
 - **[Nicholas Tishkowski]((https://github.com/Sallygator))**
 - **[Truman Davis]((https://github.com/Trust-e))**
 
+## 🚀 Deployed Application
+**Link to Cload Hosted Application**([CUDegreePlanner](https://cudegreeplanner.onrender.com))
+
 
 ## 📋 Description
 
@@ -27,7 +30,7 @@ _An interface to assist CU Boulder Computer Science Undergraduate Students with 
 - **Log in**
 - **Registration**
 - **Ralphie Webpage Pet**
-- **[WIP] Highlighting of Prerequesites**
+- **Highlighting of Prerequesites**
 - **Encripted Passwords**
 
 ## 🛠 Technology Stack
