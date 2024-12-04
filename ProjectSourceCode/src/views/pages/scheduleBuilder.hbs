@@ -232,11 +232,11 @@
                 var prerecs_parsed = prerecs.innerHTML.slice(9).split(",");
                 var satisfied = new Array(prerecs_parsed.length).fill(false);
 
-                for (let i = 1; i < year; i++){
+                for (let i = 1; i <= year; i++){
                     var check_year_fall = document.getElementById("Year " + i + "_Fall")
-                    for (let j = 1; j < check_year_fall.childElementCount; j++) {
+                    for (let j = 0; j < check_year_fall.childElementCount; j++) {
                         var check_card = check_year_fall.children.item(j).children.item(0);
-                        var check_countsfor = document.getElementById(check_card.id + "_countsfor");
+                        if (check_card != null) {var check_countsfor = document.getElementById(check_card.id + "_countsfor");}
                         if (check_countsfor != null) {
                             var check_countsfor_parsed = check_countsfor.innerHTML.slice(11);
                             for (let k = 0; k < prerecs_parsed.length; k++){
@@ -248,9 +248,9 @@
                     }
                     if (semester == "S"){
                         var check_year_fall = document.getElementById("Year " + year + "_Fall")
-                        for (let j = 1; j < check_year_fall.childElementCount; j++) {
+                        for (let j = 0; j < check_year_fall.childElementCount; j++) {
                             var check_card = check_year_fall.children.item(j).children.item(0);
-                            var check_countsfor = document.getElementById(check_card.id + "_countsfor");
+                            if (check_card != null) {var check_countsfor = document.getElementById(check_card.id + "_countsfor");}
                             if (check_countsfor != null) {
                                 var check_countsfor_parsed = check_countsfor.innerHTML.slice(11);
                                 for (let k = 0; k < prerecs_parsed.length; k++){
@@ -263,9 +263,9 @@
                     }
                     
                     var check_year_spring = document.getElementById("Year " + i + "_Spring")
-                    for (let j = 1; j < check_year_spring.childElementCount; j++) {
+                    for (let j = 0; j < check_year_spring.childElementCount; j++) {
                         var check_card = check_year_spring.children.item(j).children.item(0);
-                        var check_countsfor = document.getElementById(check_card.id + "_countsfor");
+                        if (check_card != null) {var check_countsfor = document.getElementById(check_card.id + "_countsfor");}
                         if (check_countsfor != null) {
                             var check_countsfor_parsed = check_countsfor.innerHTML.slice(11);
                             for (let k = 0; k < prerecs_parsed.length; k++){
@@ -275,15 +275,16 @@
                             }
                         }
                 }   
-                }
-                if (satisfied.every(Boolean)) {
-                    prerecs.innerHTML.color = "green";
-                    alert("passin");
-                    
-                } else {
-                    prerecs.innerHTML.color = "red";
-                    alert("failin")
-                }
+            }
+        if (satisfied.every(Boolean)) 
+        {
+            prerecs.style.setProperty('color', 'green', 'important');
+        } 
+
+        else 
+        {
+            prerecs.style.setProperty('color', 'red', 'important');
+        }
                 
         }
     }
@@ -305,14 +306,16 @@
                 stop: function() {
                     for (let m = 1; m < 5; m++){
                         var falls = document.getElementById("Year " + m + "_Fall");
-                        for (let j = 1; j < falls.childElementCount; j++){
+                        for (let j = 0; j < falls.childElementCount; j++){
+                            if (falls.children.item(j).children.item(0) != null) {
                             var card = falls.children.item(j).children.item(0).id;
-                            checkPrerecs(card, falls);
+                            checkPrerecs(card, falls);}
                         }
                         var springs = document.getElementById("Year " + m + "_Spring");
-                        for (let j = 1; j < springs.childElementCount; j++){
+                        for (let j = 0; j < springs.childElementCount; j++){
+                            if (springs.children.item(j).children.item(0) != null) {
                             var card = springs.children.item(j).children.item(0).id;
-                            checkPrerecs(card, springs);
+                            checkPrerecs(card, springs);}
                         }
                     }
                 }
@@ -343,10 +346,11 @@
                
                 var course = courses.children.item(i).children.item(0).id;
                 var course_title = courses.children.item(i).children.item(0).children.item(0).children.item(0).id;
-
+                if (document.getElementById(course + "_countsfor") != null){
+                var countsfor = document.getElementById(course + "_countsfor").innerHTML.slice(11);}
                 //alert(course_title.innerHTML);
 
-                if(searched_value == course_title || searched_value == course)
+                if(searched_value == course_title || searched_value == course || countsfor == searched_value)
                 {
                     courses.children.item(i).style.display = "block";
                 }
@@ -361,7 +365,7 @@
     </script>
 
 </head>
-<body onload="setupTemplate()">
+<body>
     <!-- Sidebar -->
     <div class="main">
         <div class="sidebar">
@@ -384,7 +388,7 @@
                                             <p id="{{classcode}}_required">Requires {{prerecs}}</p>
                                         {{/if}}
                                         {{#if countsfor}}
-                                            <p id="{{classcode}}_countsfor">Counts for {{countsfor}}</p>
+                                            <p id="{{classcode}}_countsfor" tag="{{countsfor}}">Counts for {{countsfor}}</p>
                                         {{/if}}
                                     </div>
                                 </div>
@@ -399,16 +403,20 @@
                 <h3>{{this.name}}</h3>
                 <div class="semester">
                     <h6>Fall</h6>
-                    <ul id="{{this.name}}_Fall" class="connectedSortable"  >
+                    <p style="color: #648cc44b;"> Drag and drop items here! </p>
+                    <ul id="{{this.name}}_Fall" class="connectedSortable">
                         <li id="fall-empty">
-                           Drag and drop items here!
+                           
                         </li>
                     </ul>
                 </div>
                 <div class="semester">
                     <h6>Spring</h6>
+                    <p style="color: #648cc44b;"> Drag and drop items here! </p>
                     <ul id="{{this.name}}_Spring" class="connectedSortable">
-                        <li>Drag and drop items here!</li>
+                        <li id="spring-empty">
+
+                        </li>
                     </ul>
                 </div>
             </div>
